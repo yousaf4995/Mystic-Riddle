@@ -5,12 +5,12 @@ using UnityEngine;
 public class DeviceSafeArea : MonoBehaviour
 {
 
- [SerializeField]  private RectTransform Panel;
+    [SerializeField] private RectTransform Panel;
     Rect LastSafeArea = new Rect(0, 0, 0, 0);
 
     void Awake()
     {
-        Panel = GetComponent<RectTransform>();
+        Panel ??= GetComponent<RectTransform>();
         Refresh();
     }
 
