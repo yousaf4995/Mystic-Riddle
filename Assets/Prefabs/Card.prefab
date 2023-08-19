@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3968183838269059357}
   - component: {fileID: 3968183838269059358}
   - component: {fileID: 3968183838269059359}
-  - component: {fileID: 3968183838269059356}
+  - component: {fileID: -1948463325753865427}
+  - component: {fileID: 6995892609707690484}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -77,7 +78,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3968183838269059356
+--- !u!114 &-1948463325753865427
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3968183838269059354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: ec3db9f957ac6e044ad439719085bcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -117,7 +118,24 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 3968183838269059359}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6995892609707690484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3968183838269059354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee016379472499e86565690fe6d26bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardData:
+    CardType: 0
+    normalFaceSprite: {fileID: 0}
+    specificFaceSprite: {fileID: 0}
+  cardFaceImage: {fileID: 3968183838269059359}

@@ -37,26 +37,22 @@ public class CardGridLayout : LayoutGroup
         }
 
         parentWidth = rectTransform.rect.width;
-
         parentHeight = rectTransform.rect.height;
-      
-        float cellHeight = (parentHeight - 2 * paddingFactor - cellSpacing.y * (gridRows - 1)) / gridRows;
+
+        float cellHeight = (parentHeight - (2 * paddingFactor) - cellSpacing.y * (gridRows - 1)) / gridRows;
         float cellWidth = cellHeight;
 
-        if (cellWidth * gridColumns + cellSpacing.x * (gridRows - 1) > parentWidth)
+        if (cellWidth * gridColumns + cellSpacing.x * (gridColumns - 1) > parentWidth)
         {
-            cellWidth = (parentWidth - 2 * paddingFactor - cellSpacing.x* (gridColumns - 1)) / gridColumns;
+            cellWidth = (parentWidth - (2 * paddingFactor) - cellSpacing.x * (gridColumns - 1)) / gridColumns;
             cellHeight = cellWidth;
         }
-
 
         cellSize.x = cellWidth;
         cellSize.y = cellHeight;
 
         padding.left = Mathf.FloorToInt((parentWidth - gridColumns * cellWidth - cellSpacing.x * (gridColumns - 1)) / 2);
-      //  padding.right = padding.left;
         padding.top = Mathf.FloorToInt((parentHeight - gridRows * cellHeight - cellSpacing.y * (gridRows - 1)) / 2);
-     //   padding.bottom = padding.top;
 
         int columnCount = 0;
         int rowCount = 0;
@@ -68,14 +64,17 @@ public class CardGridLayout : LayoutGroup
 
             var item = rectChildren[i];
 
-            var xPos = padding.left + (cellSize.x * columnCount) + (cellSpacing.x * (columnCount - 1));
-            var yPos = padding.top + (cellSize.y * rowCount) + (cellSpacing.y * (rowCount - 1));
+            var xPos = padding.left + (cellSize.x + cellSpacing.x) * columnCount;
+            var yPos = padding.top + (cellSize.y + cellSpacing.y) * rowCount;
+
+            //var xPos2 = padding.left + (cellSize.x * columnCount) + (cellSpacing.x * (columnCount - 1));
+            //var yPos2 = padding.top + (cellSize.y * rowCount) + (cellSpacing.y * (rowCount - 1));
 
             SetChildAlongAxis(item, 0, xPos, cellSize.x);
             SetChildAlongAxis(item, 1, yPos, cellSize.y);
         }
-
     }
+
 
 
     public override void CalculateLayoutInputVertical()
