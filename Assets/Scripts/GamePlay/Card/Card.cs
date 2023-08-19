@@ -46,9 +46,9 @@ namespace GamePlay
 }
 
 [Serializable]
-public struct CardData
+public class CardData
 {
-    public int CardType;
+    public int CardType=-1;
     public Sprite normalFaceSprite;
     public Sprite specificFaceSprite;
 }

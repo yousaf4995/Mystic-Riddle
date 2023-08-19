@@ -9,13 +9,13 @@ public class UIButton : Button, IPointerDownHandler, IPointerUpHandler
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-       
-        Debug.Log("Dowm");
+        SoundManager.Instance.PlayButtonClickSound();
+        Debug.Log("OnPointer Down");
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
       
-        Debug.Log("Up");
+        Debug.Log("OnPointer Up");
     }
 }

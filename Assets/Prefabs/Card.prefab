@@ -134,8 +134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee016379472499e86565690fe6d26bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardBtn: {fileID: -1948463325753865427}
+  cardFaceImage: {fileID: 3968183838269059359}
   CardData:
     CardType: 0
     normalFaceSprite: {fileID: 0}
     specificFaceSprite: {fileID: 0}
-  cardFaceImage: {fileID: 3968183838269059359}

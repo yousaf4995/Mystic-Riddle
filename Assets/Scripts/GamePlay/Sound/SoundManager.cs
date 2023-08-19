@@ -24,7 +24,7 @@ public class SoundManager : Singleton<SoundManager>
 
     }
 
-    public void PlayButtonSound()
+    public void PlayButtonClickSound()
     {
         PlayClip(btnClip);
     }
@@ -52,9 +52,20 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayClip(AudioClip clip)
     {
-       // audioSource.PlayOneShot(clip);
+        // audioSource.PlayOneShot(clip);
         Debug.Log("Clip Played : " + clip);
     }
 
+    public void PauseSoundPlayer(bool pasue)
+    {
+        if (pasue)
+            audioSource.Pause();
+        else
+            audioSource.UnPause();
+    }
 
+    public void SetSoundPlayerVolume(float volume)
+    {
+        audioSource.volume = volume;
+    }
 }
