@@ -1,27 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameCard;
 
 public class GamePlayController : MonoBehaviour
 {
-    [Range(2,10)]
+    [Range(2, 10)]
     public int rows = 2;
     [Range(2, 10)]
     public int colums = 2;
     public GameObject cardPrefab;
     public Transform cardContainer;
+
+    [Space]
+    [Header("Sprites")]
+    public SpriteData cardSprites;
+
     public List<CardData> cardsInGamePlay;
 
     [Header("Logic")]
-    public CardData firstCard;
-    public CardData secondCard;
+    public Card firstCard;
+    public Card secondCard;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    public void CardClicked(CardData cardData)
+    void InitializeGame()
+    {
+        for (int i = 0; i < (rows * colums); i++)
+        {
+            GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
+            Card currentCard = cardGO.GetComponent<Card>();
+            CardData cData = new CardData();
+            cData.CardType = i;
+          
+            currentCard.Init(cData);
+        }
+    }
+
+    public void CardClicked(Card cardData)
     {
         if (firstCard == null)
             firstCard = cardData;
@@ -31,7 +50,7 @@ public class GamePlayController : MonoBehaviour
 
         if (firstCard != null && secondCard != null)
         {
-            if (firstCard.CardType == secondCard.CardType)
+            if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
                 Debug.Log("Correct Match");
             }
@@ -43,4 +62,11 @@ public class GamePlayController : MonoBehaviour
         }
 
     }
+}
+
+[System.Serializable]
+public struct SpriteData
+{
+    public Sprite normalSprite;
+    public Sprite[] cardSprites;
 }

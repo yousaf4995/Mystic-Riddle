@@ -5,6 +5,7 @@ namespace CardModel
 {
     public abstract class AbstractCard : MonoBehaviour,Icard
     {
+        [SerializeField]internal bool isFliped = false;
         public virtual void Flip()
         {
             
@@ -15,7 +16,7 @@ namespace CardModel
             
         }
 
-        public virtual void OnCardClicked()
+        public virtual void CardClicked()
         {
            
         }

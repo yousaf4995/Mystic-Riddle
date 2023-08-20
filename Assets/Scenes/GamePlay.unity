@@ -1254,16 +1254,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 137
+    m_Left: 142
     m_Right: 12
-    m_Top: 10
+    m_Top: 14
     m_Bottom: 24
   m_ChildAlignment: 1
   gridRows: 3
   gridColumns: 3
-  cellSize: {x: 159.9635, y: 159.9635}
+  cellSize: {x: 156.63017, y: 156.63017}
   cellSpacing: {x: 10, y: 10}
-  paddingFactor: 10
+  paddingFactor: 15
   parentWidth: 775.6534
   parentHeight: 519.8905
 --- !u!1 &1097380470
@@ -2185,6 +2185,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3968183838269059357, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968183838269059357, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2231,6 +2235,18 @@ PrefabInstance:
     - target: {fileID: 3968183838269059357, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968183838269059359, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
+      propertyPath: m_Color.b
+      value: 0.21181916
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968183838269059359, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5283019
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968183838269059359, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
+      propertyPath: m_Color.r
+      value: 0.25479302
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}

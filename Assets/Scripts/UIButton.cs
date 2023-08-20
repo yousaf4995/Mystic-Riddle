@@ -13,9 +13,9 @@ public class UIButton : Button, IPointerDownHandler, IPointerUpHandler
         Debug.Log("OnPointer Down");
     }
 
-    public override void OnPointerUp(PointerEventData eventData)
-    {
+    //public override void OnPointerUp(PointerEventData eventData)
+    //{
       
-        Debug.Log("OnPointer Up");
-    }
+    //    Debug.Log("OnPointer Up");
+    //}
 }
