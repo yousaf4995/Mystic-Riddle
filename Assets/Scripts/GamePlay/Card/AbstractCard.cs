@@ -15,15 +15,17 @@ namespace CardModel
         [Space]
         [Header("Card Data")]
         public Action<Card> OnCardClicked;
-        public Action<bool> onCardFliped;
+        public Action OncallBack;
+        public Action<bool> OnCardFliped;  
+        public Action<bool> OnCardFlipedStarted;    
+        public Action<bool> OnCardFlipedMiddle;
 
-        public abstract void Init(CardData cardData, Action<Card> cardClickEvent);
+        public abstract void Init(CardData cardData, Action<Card> cardClickEvent, Action callBack);
 
-        public abstract void CardClicked();
+        public abstract void CardClicked(Card card);
         public abstract void Flip();
         public abstract void FlipNormalFace();
         public abstract void FlipSpecificFace();
-        public abstract void CalculateFlip();
 
         public abstract void CardMatched();
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameCard;
+using System;
 
 public class GamePlayController : MonoBehaviour
 {
@@ -21,59 +22,96 @@ public class GamePlayController : MonoBehaviour
     [Header("Logic")]
     public Card firstCard;
     public Card secondCard;
+
+    // private area
+    CardGridLayout gridLayout;
     // Start is called before the first frame update
     void Start()
     {
+        gridLayout = cardContainer.GetComponent<CardGridLayout>();
         InitializeGame();
     }
 
     void InitializeGame()
     {
+        cardsInGamePlay.Clear();
+
+        gridLayout.gridRows = rows;
+        gridLayout.gridColumns = colums;
+
         int length = (rows * colums);
-        for (int i = 0; i < length; i++)
+
+        if (ProgressionController.Instance.LoadGamedata() != null && ProgressionController.Instance.LoadGamedata().Length > 0)
         {
-            int currentCardType= i % (length / 2); ;
-            GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
-            Card currentCard = cardGO.GetComponent<Card>();
-            CardData cData = new CardData();
-            cData.CardType = currentCardType;
-            cData.normalFaceSprite = cardSprites.normalSprite;
-            cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
-            currentCard.CardData = cData;
-            currentCard.Init(cData, CardClicked);
+
         }
+        else
+        {
+            for (int i = 0; i < length; i++)
+            {
+                int currentCardType = i % (length / 2); ;
+                GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
+                Card currentCard = cardGO.GetComponent<Card>();
+                CardData cData = new CardData();
+                cData.CardType = currentCardType;
+                cData.normalFaceSprite = cardSprites.normalSprite;
+                cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+                currentCard.CardData = cData;
+                currentCard.Init(cData, CardClicked, OnCardActionsComplete);
+
+                cardsInGamePlay.Add(currentCard.CardData);
+            }
+        }
+        //  gridLayout.CalculateLayoutInputHorizontal();
+        gridLayout.CalculateLayoutInputVertical();
     }
 
+    void LoadSaveData()
+    {
+
+    }
     public void CardClicked(Card cardData)
+
     {
         if (firstCard == null)
             firstCard = cardData;
-
-        if (secondCard == null)
+        else if (secondCard == null)
             secondCard = cardData;
 
+    }
+    private void OnCardActionsComplete()
+    {
+        print("OnCardActionsComplete");
         if (firstCard != null && secondCard != null)
         {
             if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
-                firstCard.CardMatched();
-                secondCard.CardMatched();
                 Debug.Log("Correct Match");
+
+                firstCard.CardMatched();
+                firstCard = null;
+                secondCard.CardMatched();
+                secondCard = null;
+
             }
             else
             {
-                firstCard.CardMissMatched();
-                secondCard.CardMissMatched();
+                Debug.Log("In Correct Match");
 
+                firstCard.CardMissMatched();
                 firstCard = null;
+
+                secondCard.CardMissMatched();
                 secondCard = null;
 
-                Debug.Log("In Correct Match");
             }
 
         }
-
     }
+
+
+
+
 }
 
 [System.Serializable]

@@ -11,7 +11,7 @@ public class TimerDisplayHelper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       GamePlayTimer.Instance.UnSubscribeTimer(SubscribeTimer);
+        GamePlayTimer.Instance.UnSubscribeTimer(SubscribeTimer);
         GamePlayTimer.Instance.SubscribeTimer(SubscribeTimer);
     }
 

@@ -81,7 +81,7 @@ public class CardGridLayout : LayoutGroup
 
     public override void CalculateLayoutInputVertical()
     {
-
+        OnTransformChildrenChanged();
     }
 
 

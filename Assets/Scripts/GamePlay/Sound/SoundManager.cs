@@ -53,7 +53,7 @@ public class SoundManager : Singleton<SoundManager>
     public void PlayClip(AudioClip clip)
     {
         // audioSource.PlayOneShot(clip);
-        Debug.Log("Clip Played : " + clip);
+     //   Debug.Log("Clip Played : " + clip);
     }
 
     public void PauseSoundPlayer(bool pasue)
