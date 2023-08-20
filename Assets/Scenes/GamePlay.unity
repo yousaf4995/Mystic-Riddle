@@ -494,15 +494,12 @@ MonoBehaviour:
   colums: 2
   cardPrefab: {fileID: 3968183838269059354, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
   cardContainer: {fileID: 1054705959}
+  cardSprites:
+    normalSprite: {fileID: 0}
+    cardSprites: []
   cardsInGamePlay: []
-  firstCard:
-    CardType: -1
-    normalFaceSprite: {fileID: 0}
-    specificFaceSprite: {fileID: 0}
-  secondCard:
-    CardType: -1
-    normalFaceSprite: {fileID: 0}
-    specificFaceSprite: {fileID: 0}
+  firstCard: {fileID: 0}
+  secondCard: {fileID: 0}
 --- !u!4 &545632094
 Transform:
   m_ObjectHideFlags: 0
@@ -2247,6 +2244,10 @@ PrefabInstance:
     - target: {fileID: 3968183838269059359, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
       propertyPath: m_Color.r
       value: 0.25479302
+      objectReference: {fileID: 0}
+    - target: {fileID: 6995892609707690484, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
+      propertyPath: rotationSpeed
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}

@@ -24,19 +24,23 @@ public class GamePlayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        InitializeGame();
     }
 
     void InitializeGame()
     {
-        for (int i = 0; i < (rows * colums); i++)
+        int length = (rows * colums);
+        for (int i = 0; i < length; i++)
         {
+            int currentCardType= i % (length / 2); ;
             GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
             Card currentCard = cardGO.GetComponent<Card>();
             CardData cData = new CardData();
-            cData.CardType = i;
-          
-            currentCard.Init(cData);
+            cData.CardType = currentCardType;
+            cData.normalFaceSprite = cardSprites.normalSprite;
+            cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+            currentCard.CardData = cData;
+            currentCard.Init(cData, CardClicked);
         }
     }
 
@@ -52,10 +56,18 @@ public class GamePlayController : MonoBehaviour
         {
             if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
+                firstCard.CardMatched();
+                secondCard.CardMatched();
                 Debug.Log("Correct Match");
             }
             else
             {
+                firstCard.CardMissMatched();
+                secondCard.CardMissMatched();
+
+                firstCard = null;
+                secondCard = null;
+
                 Debug.Log("In Correct Match");
             }
 

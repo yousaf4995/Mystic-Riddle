@@ -6,29 +6,28 @@ namespace GameCard
 {
     public class Card : AbstractCard
     {
-        public UIButton cardBtn;
-        public Image cardFaceImage;
         [Space]
         [Header("Card Data")]
         public CardData CardData;
 
-        [Space]
-        [Header("Card Data")]
-        public Action<Card> OnCardClicked;
-        public Action<bool> onCardFliped;
-
         public bool IsFliped => isFliped;
+        [Range(1, 20)]
         public float rotationSpeed = 20f;
         private void Start()
         {
             cardBtn.onClick.RemoveListener(CardClicked);
             cardBtn.onClick.AddListener(CardClicked);
         }
-        public override void Init(CardData CardData)
+        public override void Init(CardData CardData, Action<Card> cardClickEvent)
         {
-            cardBtn.onClick.RemoveListener(CardClicked);
-            cardBtn.onClick.AddListener(CardClicked);
+            AddListner(cardClickEvent);
             FillData(CardData);
+        }
+
+        void AddListner(Action<Card> CardData)
+        {
+            cardBtn.onClick.RemoveListener(() => { CardData(this); }); // Remove the old listener
+            cardBtn.onClick.AddListener(() => CardData?.Invoke(this)); // Add the new listener
         }
         void FillData(CardData cData)
         {
@@ -36,11 +35,6 @@ namespace GameCard
             cardFaceImage.sprite = this.CardData.normalFaceSprite;
         }
 
-        public void AddListner(Action<Card> CardData)
-        {
-            cardBtn.onClick.RemoveListener(() => { CardData(this); }); // Remove the old listener
-            cardBtn.onClick.AddListener(() => CardData?.Invoke(this)); // Add the new listener
-        }
         public override void Flip()
         {
 
@@ -79,6 +73,15 @@ namespace GameCard
             StartCoroutine(transform.DoRotation(false, rotationSpeed, OnFlipComplete));
         }
 
+        public override void CardMatched()
+        {
+
+        }
+
+        public override void CardMissMatched()
+        {
+
+        }
         void OnFlipComplete()
         {
             isFliped = !isFliped;
@@ -102,6 +105,7 @@ namespace GameCard
         {
             onCardFliped -= onFliped;
         }
+
 
         #endregion
     }
