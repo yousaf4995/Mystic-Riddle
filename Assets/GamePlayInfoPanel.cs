@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class GamePlayInfoPanel : MonoBehaviour
 {
-    public TMP_Text correctScoreText;
-    public TMP_Text inCorrectScoreText;
-
+    public InfoTexts gamePlayInfoTxts;
     //
     GameController GameController
     {
@@ -35,11 +33,17 @@ public class GamePlayInfoPanel : MonoBehaviour
 
     public void SetCorrectCardsMacth(int score)
     {
-        correctScoreText.text = score + " / " + GameController.ProgressionController.MaxCardToPlay;
+       gamePlayInfoTxts.correctCardsInfoTxt.text = score + " / " + GameController.ProgressionController.MaxCardToPlay;
     }
 
     public void SetInCorrectCardsMacth(int score)
     {
-        inCorrectScoreText.text = score + " / " + GameController.ProgressionController.MaxCardToPlay;
+        gamePlayInfoTxts.inCorrectCardsInfoTxt.text = score + " / " + GameController.ProgressionController.MaxCardToPlay;
     }
+}
+[System.Serializable]
+public struct InfoTexts
+{
+    public TMP_Text correctCardsInfoTxt;
+    public TMP_Text inCorrectCardsInfoTxt;
 }

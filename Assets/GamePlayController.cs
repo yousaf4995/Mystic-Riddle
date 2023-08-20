@@ -25,6 +25,32 @@ public class GamePlayController : MonoBehaviour
 
     // private area
     CardGridLayout gridLayout;
+    GameController GameController
+    {
+        get
+        {
+            var gc = GameController.Instance;
+
+            if (!gc || gc == null)
+                gc = FindAnyObjectByType<GameController>();
+
+            return gc;
+
+        }
+    }
+    UiController UiController
+    {
+        get
+        {
+            var uc = UiController.Instance;
+
+            if (!uc || uc == null)
+                uc = FindAnyObjectByType<UiController>();
+
+            return uc;
+
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -40,28 +66,33 @@ public class GamePlayController : MonoBehaviour
         gridLayout.gridColumns = colums;
 
         int length = (rows * colums);
+        GameController.ProgressionController.MaxCardToPlay = length/2;
+
         CardData[] cardDatasLoaded = ProgressionController.Instance.LoadGamedata();
 
         if (cardDatasLoaded != null && cardDatasLoaded.Length > 0)
         {
+            Debug.Log("populating from saved data");
             for (int i = 0; i < length; i++)
             {
                 int currentCardType = i % (length / 2); ;
                 GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
                 Card currentCard = cardGO.GetComponent<Card>();
                 CardData cData = cardDatasLoaded[i];
-               
-               // cData.normalFaceSprite = cardSprites.normalSprite;
-               // cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
-              
+
+                // cData.normalFaceSprite = cardSprites.normalSprite;
+                // cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+
                 currentCard.CardData = cData;
                 currentCard.Init(cData, CardClicked, OnCardActionsComplete);
 
                 cardsInGamePlay.Add(currentCard.CardData);
+                ProgressionController.Instance.DeleteSavedDta();
             }
         }
         else
         {
+            Debug.Log("populating from fresh data");
             for (int i = 0; i < length; i++)
             {
                 int currentCardType = i % (length / 2); ;
@@ -79,6 +110,10 @@ public class GamePlayController : MonoBehaviour
         }
         //  gridLayout.CalculateLayoutInputHorizontal();
         gridLayout.CalculateLayoutInputVertical();
+
+        ProgressionController pc = GameController.ProgressionController;
+        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(pc.CorrectCardsScore);
+        UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(pc.inCorrectCardsScore);
     }
 
     void LoadSaveData()
@@ -108,6 +143,7 @@ public class GamePlayController : MonoBehaviour
                 secondCard.CardMatched();
                 secondCard = null;
 
+                AddCorrectScore();
             }
             else
             {
@@ -118,13 +154,35 @@ public class GamePlayController : MonoBehaviour
 
                 secondCard.CardMissMatched();
                 secondCard = null;
-
+                AddInCorrectScore();
             }
 
         }
     }
 
+    void AddCorrectScore()
+    {
+        ProgressionController pc = GameController.ProgressionController;
+        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(++pc.CorrectCardsScore);
+        if (pc.CorrectCardsScore >= pc.MaxCardToPlay)
+        {
+            DisplayComplete();
+        }
+    }
+    void AddInCorrectScore()
+    {
+        ProgressionController pc = GameController.ProgressionController;
+        UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(++pc.inCorrectCardsScore);
+        if (pc.inCorrectCardsScore >= pc.MaxCardToPlay)
+        {
+            DisplayComplete();
+        }
+    }
 
+    void DisplayComplete()
+    {
+        UiController.CompleteScreen.DisplayCompleteScreen();// loose screen
+    }
 }
 
 [System.Serializable]

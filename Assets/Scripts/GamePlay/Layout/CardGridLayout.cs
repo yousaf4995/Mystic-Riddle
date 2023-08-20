@@ -7,6 +7,7 @@ public class CardGridLayout : LayoutGroup
     public int gridColumns;
     public Vector2 cellSize;
     public Vector2 cellSpacing;
+    [Range(5,100)]
     public float paddingFactor;
 
 
@@ -39,7 +40,7 @@ public class CardGridLayout : LayoutGroup
         parentWidth = rectTransform.rect.width;
         parentHeight = rectTransform.rect.height;
 
-        paddingFactor = Mathf.Clamp(paddingFactor, 0, Mathf.Min(parentWidth, parentHeight) / 2);
+      //  paddingFactor = Mathf.Clamp(paddingFactor, 0, Mathf.Min(parentWidth, parentHeight) / 2);
 
         float cellHeight = (parentHeight - (2 * paddingFactor) - cellSpacing.y * (gridRows - 1)) / gridRows;
         float cellWidth = cellHeight;

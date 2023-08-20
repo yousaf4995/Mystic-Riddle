@@ -15,8 +15,11 @@ public class ProgresssionSaver
     }
     private void SaveCardDataToFile(CardData[] cardDataArray, Action onComplete = null)
     {
-        string json = JsonUtility.ToJson(cardDataArray);
+        CardDataWrapper wrapper = new CardDataWrapper { cardDataArray = cardDataArray };
+        string json = JsonUtility.ToJson(wrapper);
         File.WriteAllText(Application.persistentDataPath + basePath, json);
+
+        Debug.Log(Application.persistentDataPath + basePath);
         onComplete?.Invoke();
     }
 
@@ -32,9 +35,29 @@ public class ProgresssionSaver
         if (File.Exists(Application.persistentDataPath + basePath))
         {
             string json = File.ReadAllText(Application.persistentDataPath + basePath);
-            return JsonUtility.FromJson<CardData[]>(json);
+            CardDataWrapper wrapper = JsonUtility.FromJson<CardDataWrapper>(json);
+            return wrapper.cardDataArray;
         }
         return null;
     }
 
+    public void DeleteSavedDta()
+    {
+        if (File.Exists(Application.persistentDataPath + basePath))
+        {
+            File.Delete(Application.persistentDataPath + basePath);
+        }
+        else
+        {
+            Debug.Log("No file to delete");
+        }
+    }
+
+}
+
+
+[Serializable]
+public class CardDataWrapper
+{
+    public CardData[] cardDataArray;
 }

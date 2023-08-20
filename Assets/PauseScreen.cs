@@ -9,6 +9,8 @@ public class PauseScreen : MonoBehaviour
     public UIButton resumebtn;
     public UIButton saveGameButton;
 
+    [Space]
+    public InfoTexts gamePauseInfoTxts;
     GameController GameController
     {
         get
@@ -40,6 +42,7 @@ public class PauseScreen : MonoBehaviour
     public void DisplayPauseScreen()
     {
         pausePanel.SetActive(true);
+        PopulateProgressionDta();
     }
 
     void ResumeGame()
@@ -64,5 +67,18 @@ public class PauseScreen : MonoBehaviour
             Debug.Log("Data Saved Successfuly");
         });
     }
+    void PopulateProgressionDta()
+    {
 
+        gamePauseInfoTxts.correctCardsInfoTxt.text =
+                GameController.ProgressionController.CorrectCardsScore
+            + " / " +
+                  GameController.ProgressionController.MaxCardToPlay;
+
+        gamePauseInfoTxts.inCorrectCardsInfoTxt.text =
+          GameController.ProgressionController.inCorrectCardsScore
+      + " / " +
+            GameController.ProgressionController.MaxCardToPlay;
+
+    }
 }

@@ -1,18 +1,13 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIButton : Button, IPointerDownHandler, IPointerUpHandler
+public class UIButton : Button
 {
-
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
+        base.OnPointerClick(eventData);
         SoundManager.Instance.PlayButtonClickSound();
         // Debug.Log("OnPointer Down");
     }
-
-    //public override void OnPointerUp(PointerEventData eventData)
-    //{
-
-    //    Debug.Log("OnPointer Up");
-    //}
+   
 }

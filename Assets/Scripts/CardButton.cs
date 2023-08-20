@@ -4,18 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardButton : Button, IPointerDownHandler, IPointerUpHandler
+public class CardButton : Button
 {
-
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
+        base.OnPointerClick(eventData);
         SoundManager.Instance.PlayButtonClickSound();
-       // Debug.Log("OnPointer Down");
+        // Debug.Log("OnPointer Down");
     }
 
-    //public override void OnPointerUp(PointerEventData eventData)
-    //{
-      
-    //    Debug.Log("OnPointer Up");
-    //}
 }

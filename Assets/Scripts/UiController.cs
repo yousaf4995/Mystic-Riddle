@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class UiController : MonoBehaviour
+public class UiController : Singleton<UiController>
 {
     public UIButton pausebtn;
 
     [Header("Scripts")]
     [SerializeField] private PauseScreen pauseScreen;
+    [SerializeField] private CompleteScreen completeScreen;
     [SerializeField] private GamePlayInfoPanel gamePlayInfoPanel;
+    public PauseScreen PauseScreen { get => pauseScreen; set => pauseScreen = value; }
+    public CompleteScreen CompleteScreen { get => completeScreen; set => completeScreen = value; }
+    public GamePlayInfoPanel GamePlayInfoPanel { get => gamePlayInfoPanel; set => gamePlayInfoPanel = value; }
+
 
     // private 
     GameController GameController
@@ -29,15 +34,16 @@ public class UiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
+        initialize();
     }
     public void initialize()
     {
         pausebtn.onClick.RemoveListener(PauseBtnClick);
         pausebtn.onClick.AddListener(PauseBtnClick);
 
-        pauseScreen.Initialized();
-        gamePlayInfoPanel.Initialized();
+        PauseScreen.Initialized();
+        GamePlayInfoPanel.Initialized();
+        completeScreen.Initialized();
     }
 
     public void UpdateScore(bool isCorrectScore)
@@ -59,7 +65,7 @@ public class UiController : MonoBehaviour
 
     void PauseBtnClick()
     {
-        pauseScreen.DisplayPauseScreen();
+        PauseScreen.DisplayPauseScreen();
         Time.timeScale = 0.000001f;
 
     }
