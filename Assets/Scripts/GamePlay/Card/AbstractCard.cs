@@ -10,7 +10,7 @@ namespace CardModel
     public abstract class AbstractCard : MonoBehaviour, Icard
     {
         [SerializeField] internal bool isFliped = false;
-        [SerializeField] internal UIButton cardBtn;
+        [SerializeField] internal CardButton cardBtn;
         [SerializeField] internal Image cardFaceImage;
         [Space]
         [Header("Card Data")]

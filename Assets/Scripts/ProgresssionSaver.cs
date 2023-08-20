@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ProgresssionSaver
 {
-    string basePath = Application.persistentDataPath + "cards.json";
+    string basePath = "cards.json";
 
     // Calling method to save card data
     public void SaveCards(CardData[] gameplayCards, Action onComplete = null)
@@ -16,7 +16,7 @@ public class ProgresssionSaver
     private void SaveCardDataToFile(CardData[] cardDataArray, Action onComplete = null)
     {
         string json = JsonUtility.ToJson(cardDataArray);
-        File.WriteAllText(basePath, json);
+        File.WriteAllText(Application.persistentDataPath + basePath, json);
         onComplete?.Invoke();
     }
 
@@ -29,14 +29,12 @@ public class ProgresssionSaver
     }
     private CardData[] LoadCardDataFromFile()
     {
-        if (File.Exists(basePath))
+        if (File.Exists(Application.persistentDataPath + basePath))
         {
-            string json = File.ReadAllText(basePath);
+            string json = File.ReadAllText(Application.persistentDataPath + basePath);
             return JsonUtility.FromJson<CardData[]>(json);
         }
         return null;
     }
-
-
 
 }

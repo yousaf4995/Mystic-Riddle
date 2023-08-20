@@ -5,24 +5,39 @@ using TMPro;
 
 public class UiController : MonoBehaviour
 {
-    public TMP_Text correctScoreText;
-    public TMP_Text inCorrectScoreText;
+    public UIButton pausebtn;
 
-    int currentScore = 0;
-    int maxCardsToPlay = 0;
+    [Header("Scripts")]
+    [SerializeField] private PauseScreen pauseScreen;
+    [SerializeField] private GamePlayInfoPanel gamePlayInfoPanel;
+
+    // private 
+    GameController GameController
+    {
+        get
+        {
+            var gc = GameController.Instance;
+
+            if (!gc || gc == null)
+                gc = FindAnyObjectByType<GameController>();
+
+            return gc;
+
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-
+      
     }
-   public void initialize(GamePlayController gamePlayController)
+    public void initialize()
     {
-        correctScoreText.text = "";
-    }
-    // Update is called once per frame
-    void Update()
-    {
+        pausebtn.onClick.RemoveListener(PauseBtnClick);
+        pausebtn.onClick.AddListener(PauseBtnClick);
 
+        pauseScreen.Initialized();
+        gamePlayInfoPanel.Initialized();
     }
 
     public void UpdateScore(bool isCorrectScore)
@@ -39,6 +54,13 @@ public class UiController : MonoBehaviour
     }
     void InCorrectScore()
     {
+
+    }
+
+    void PauseBtnClick()
+    {
+        pauseScreen.DisplayPauseScreen();
+        Time.timeScale = 0.000001f;
 
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayTimer : Singleton<GamePlayTimer>
+public class GamePlayTimer : MonoBehaviour
 {
     // in seonds
     public float gameplayTime = 180;

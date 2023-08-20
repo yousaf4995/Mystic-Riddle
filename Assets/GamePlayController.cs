@@ -40,10 +40,25 @@ public class GamePlayController : MonoBehaviour
         gridLayout.gridColumns = colums;
 
         int length = (rows * colums);
+        CardData[] cardDatasLoaded = ProgressionController.Instance.LoadGamedata();
 
-        if (ProgressionController.Instance.LoadGamedata() != null && ProgressionController.Instance.LoadGamedata().Length > 0)
+        if (cardDatasLoaded != null && cardDatasLoaded.Length > 0)
         {
+            for (int i = 0; i < length; i++)
+            {
+                int currentCardType = i % (length / 2); ;
+                GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
+                Card currentCard = cardGO.GetComponent<Card>();
+                CardData cData = cardDatasLoaded[i];
+               
+               // cData.normalFaceSprite = cardSprites.normalSprite;
+               // cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+              
+                currentCard.CardData = cData;
+                currentCard.Init(cData, CardClicked, OnCardActionsComplete);
 
+                cardsInGamePlay.Add(currentCard.CardData);
+            }
         }
         else
         {
@@ -108,8 +123,6 @@ public class GamePlayController : MonoBehaviour
 
         }
     }
-
-
 
 
 }
