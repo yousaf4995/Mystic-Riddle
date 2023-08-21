@@ -149,7 +149,9 @@ public class GamePlayController : MonoBehaviour
 
         for (int i = 0; i < length; i++)
         {
-            int currentCardType = i % (length / 2);
+            int currentCardType = i % cardSprites.cardSprites.Length;
+           // int currentCardType = i % (length / 2);
+          //  int spriteTypeIndex = i % cardSprites.cardSprites.Length;
             CardData cData = new CardData();
             cData.CardType = currentCardType;
             cData.normalFaceSprite = cardSprites.normalSprite;
