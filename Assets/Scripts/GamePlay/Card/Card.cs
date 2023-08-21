@@ -116,7 +116,6 @@ namespace GameCard
             }
         }
 
-
         void CallBack()
         {
 

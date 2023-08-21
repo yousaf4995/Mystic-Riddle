@@ -34,7 +34,7 @@ public class UiController : Singleton<UiController>
     // Start is called before the first frame update
     void Start()
     {
-        initialize();
+      //  initialize();
     }
     public void initialize()
     {

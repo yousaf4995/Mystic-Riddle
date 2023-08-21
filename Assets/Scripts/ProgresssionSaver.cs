@@ -15,7 +15,12 @@ public class ProgresssionSaver
     }
     private void SaveCardDataToFile(CardData[] cardDataArray, Action onComplete = null)
     {
-        CardDataWrapper wrapper = new CardDataWrapper { cardDataArray = cardDataArray };
+        CardDataWrapper wrapper = new CardDataWrapper
+        {
+            correctCardsPlayed = GameController.Instance.ProgressionController.CorrectCardsScore,
+            inCorrectCardsPlayed = GameController.Instance.ProgressionController.inCorrectCardsScore,
+            cardDataArray = cardDataArray 
+        };
         string json = JsonUtility.ToJson(wrapper);
         File.WriteAllText(Application.persistentDataPath + basePath, json);
 
@@ -36,6 +41,10 @@ public class ProgresssionSaver
         {
             string json = File.ReadAllText(Application.persistentDataPath + basePath);
             CardDataWrapper wrapper = JsonUtility.FromJson<CardDataWrapper>(json);
+
+            GameController.Instance.ProgressionController.CorrectCardsScore = wrapper.correctCardsPlayed;
+            GameController.Instance.ProgressionController.inCorrectCardsScore = wrapper.inCorrectCardsPlayed;
+
             return wrapper.cardDataArray;
         }
         return null;
@@ -59,5 +68,7 @@ public class ProgresssionSaver
 [Serializable]
 public class CardDataWrapper
 {
+    public int correctCardsPlayed;
+    public int inCorrectCardsPlayed;
     public CardData[] cardDataArray;
 }

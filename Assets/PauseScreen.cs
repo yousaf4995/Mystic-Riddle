@@ -65,6 +65,7 @@ public class PauseScreen : MonoBehaviour
         GameController.ProgressionController.SaveGameData(cData, () =>
         {
             Debug.Log("Data Saved Successfuly");
+            GameController.Toast.ShowToast("Game Saved Successfuly");
         });
     }
     void PopulateProgressionDta()
