@@ -6,8 +6,9 @@ public class UIButton : Button
     public override void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);
-        SoundManager.Instance.PlayButtonClickSound();
+        if (SoundManager.Instance)
+            SoundManager.Instance.PlayButtonClickSound();
         // Debug.Log("OnPointer Down");
     }
-   
+
 }

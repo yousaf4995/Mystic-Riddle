@@ -13,6 +13,10 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GamePlayTimer gamePlayTimer;
     public GamePlayTimer GamePlayTimer => gamePlayTimer;
 
+    [SerializeField] private Toast.ToastText toast;
+    public Toast.ToastText Toast => toast;
+
+
     // Start is called before the first frame update
     void Start()
     {

@@ -72,7 +72,8 @@ public class GamePlayController : MonoBehaviour
 
         if (cardDatasLoaded != null && cardDatasLoaded.Length > 0)
         {
-            Debug.Log("populating from saved data");
+            Debug.Log("populating from saved data"); 
+            // we dont need shuffel because we saved as it is
             for (int i = 0; i < length; i++)
             {
                 int currentCardType = i % (length / 2); ;
@@ -115,7 +116,48 @@ public class GamePlayController : MonoBehaviour
         UiController.GamePlayInfoPanel.SetCorrectCardsMacth(pc.CorrectCardsScore);
         UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(pc.inCorrectCardsScore);
     }
+    void SpawnShuffledCards(CardData[] shuffledCardData)
+    {
+        for (int i = 0; i < shuffledCardData.Length; i++)
+        {
+            GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
+            Card currentCard = cardGO.GetComponent<Card>();
+            CardData cData = shuffledCardData[i];
+            currentCard.CardData = cData;
+            currentCard.Init(cData, CardClicked, OnCardActionsComplete);
 
+            cardsInGamePlay.Add(currentCard.CardData);
+        }
+    }
+    CardData[] GenerateFreshCardData(int length)
+    {
+        CardData[] freshCardData = new CardData[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            int currentCardType = i % (length / 2);
+            CardData cData = new CardData();
+            cData.CardType = currentCardType;
+            cData.normalFaceSprite = cardSprites.normalSprite;
+            cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+            freshCardData[i] = cData;
+        }
+
+        return freshCardData;
+    }
+    private void ShuffleArray<T>(T[] array)
+    {
+        int n = array.Length;
+        for (int i = n - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            T temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+   
+    
     void LoadSaveData()
     {
 
@@ -136,7 +178,9 @@ public class GamePlayController : MonoBehaviour
         {
             if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
-                Debug.Log("Correct Match");
+               // Debug.Log("Correct Match");
+                string[] successText = { "Nice","Weldone","Aawasome"};
+                GameController.Toast.ShowToast(successText[UnityEngine.Random.Range(0, successText.Length)]);
 
                 firstCard.CardMatched();
                 firstCard = null;
@@ -147,7 +191,9 @@ public class GamePlayController : MonoBehaviour
             }
             else
             {
-                Debug.Log("In Correct Match");
+                //  Debug.Log("In Correct Match");
+
+                GameController.Toast.ShowToast();
 
                 firstCard.CardMissMatched();
                 firstCard = null;
