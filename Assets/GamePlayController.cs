@@ -66,7 +66,7 @@ public class GamePlayController : MonoBehaviour
         gridLayout.gridColumns = colums;
 
         int length = (rows * colums);
-        GameController.ProgressionController.MaxCardToPlay = length/2;
+        GameController.ProgressionController.MaxCardToPlay = length / 2;
 
         CardData[] cardDatasLoaded = ProgressionController.Instance.LoadGamedata();
 
@@ -75,6 +75,7 @@ public class GamePlayController : MonoBehaviour
             // Debug.Log("populating from saved data"); 
 
             SpawnShuffledCards(cardDatasLoaded);
+            ProgressionController.Instance.DeleteSavedDta();
             //// we dont need shuffel because we saved as it is
             //for (int i = 0; i < length; i++)
             //{
@@ -120,7 +121,6 @@ public class GamePlayController : MonoBehaviour
 
         ProgressionController pc = GameController.ProgressionController;
 
-        Debug.Log(pc.CorrectCardsScore + " / "+ pc.inCorrectCardsScore);
         UiController.GamePlayInfoPanel.SetCorrectCardsMacth(pc.CorrectCardsScore);
         UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(pc.inCorrectCardsScore);
     }
@@ -133,6 +133,8 @@ public class GamePlayController : MonoBehaviour
             CardData cData = shuffledCardData[i];
             currentCard.CardData = cData;
             currentCard.Init(cData, CardClicked, OnCardActionsComplete);
+
+            cardGO.transform.localScale = (cData?.cardState == CardState.Correct) ? Vector3.zero : Vector3.one;
 
             cardsInGamePlay.Add(currentCard.CardData);
         }
@@ -164,8 +166,8 @@ public class GamePlayController : MonoBehaviour
             array[j] = temp;
         }
     }
-   
-    
+
+
     public void CardClicked(Card cardData)
 
     {
@@ -182,8 +184,8 @@ public class GamePlayController : MonoBehaviour
         {
             if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
-               // Debug.Log("Correct Match");
-                string[] successText = { "Nice","Weldone","Aawasome"};
+                // Debug.Log("Correct Match");
+                string[] successText = { "Nice", "Weldone", "Aawasome" };
                 GameController.Toast.ShowToast(successText[UnityEngine.Random.Range(0, successText.Length)]);
 
                 firstCard.CardMatched();

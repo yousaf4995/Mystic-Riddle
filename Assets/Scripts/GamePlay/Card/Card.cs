@@ -53,11 +53,15 @@ namespace GameCard
         public override void CardMatched()
         {
             // this.gameObject.SetActive(false);
+
+            CardData.cardState = CardState.Correct;
             this.transform.localScale = Vector3.zero;
         }
         public override void CardMissMatched()
         {
             FlipNormalFace();
+
+            CardData.cardState = CardState.InCorrect;
             cardBtn.interactable = true;
         }
 
@@ -102,13 +106,13 @@ namespace GameCard
         {
 
             // isFliped = !isFliped;
-          //  Debug.Log("OnFlip Middle After : " + isFliped + "of card type :" + CardData.CardType);
+            //  Debug.Log("OnFlip Middle After : " + isFliped + "of card type :" + CardData.CardType);
             cardFaceImage.sprite = IsFliped ? this.CardData.specificFaceSprite : CardData.normalFaceSprite;
         }
         void OnFlipComplete()
         {
 
-           // Debug.Log("OnFlip Complete Before : " + isFliped + " with card Type : " + CardData.CardType);
+            // Debug.Log("OnFlip Complete Before : " + isFliped + " with card Type : " + CardData.CardType);
 
             if (isFliped)// prevent extra call on complete
             {
@@ -158,4 +162,13 @@ public class CardData
     public int CardType = -1;
     public Sprite normalFaceSprite;
     public Sprite specificFaceSprite;
+    // just for save purpose
+    public CardState cardState;
+}
+
+public enum CardState
+{
+    None,
+    Correct,
+    InCorrect
 }
