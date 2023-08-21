@@ -165,10 +165,3 @@ public class CardData
     // just for save purpose
     public CardState cardState;
 }
-
-public enum CardState
-{
-    None,
-    Correct,
-    InCorrect
-}
