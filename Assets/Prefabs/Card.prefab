@@ -141,4 +141,6 @@ MonoBehaviour:
     CardType: 0
     normalFaceSprite: {fileID: 0}
     specificFaceSprite: {fileID: 0}
+    cardState: 0
   rotationSpeed: 1.5
+  scaleSpeed: 2

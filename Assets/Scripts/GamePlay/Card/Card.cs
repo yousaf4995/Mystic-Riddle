@@ -12,12 +12,15 @@ namespace GameCard
 
         public bool IsFliped => isFliped;
         [Range(1, 20)]
-        public float rotationSpeed = 20f;
+        public float rotationSpeed = 1.5f;
+        [Range(1, 20)]
+        public float scaleSpeed = 2f;
         private void Start()
         {
         }
         public override void Init(CardData CardData, Action<Card> cardClickEvent, Action callBack)
         {
+            DoScale();
             AddListners(cardClickEvent, callBack);
             FillData(CardData);
         }
@@ -66,13 +69,13 @@ namespace GameCard
         }
 
 
-        public void CalculateFlip()
+        public void DoScale()
         {
+            Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
 
-            if (isFliped)
-                FlipNormalFace();
-            else
-                FlipSpecificFace();
+            StopCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));
+            StartCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));
+
         }
 
         public override void FlipNormalFace()

@@ -53,6 +53,7 @@ public class StartScreen : MonoBehaviour
         hardButton.onClick.AddListener(HardGameType);
 
         cardSizeSpawner.onValueChanged.AddListener(OnCardSpawnChnage);
+        OnCardSpawnChnage(cardSizeSpawner.minValue);// assign vlue on start to prevent wrong selection
 
         plaGameButton.onClick.RemoveListener(StartPlayGame);
         plaGameButton.onClick.AddListener(StartPlayGame);

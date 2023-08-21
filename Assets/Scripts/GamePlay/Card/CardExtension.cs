@@ -54,5 +54,37 @@ namespace GameCard
         {
             return Quaternion.Angle(transform.rotation, targetRotation) < tolerance;
         }
+
+        public static IEnumerator DoScale(this Transform transform, Vector3 rotationDestination, float rotationSpeed, Action onStart = null, Action onMiddle = null, Action onComplete = null)
+        {
+            float t = 0;
+            bool isMiddleCalled = false;
+            Vector3 originalScale = transform.localScale*0.5f;
+
+            Vector3 desireScale = rotationDestination;
+
+            onStart?.Invoke();
+            while (t < 1)
+            {
+                t += Time.deltaTime * rotationSpeed;
+                transform.localScale = Vector3.Lerp(originalScale, desireScale, t);
+
+                //if (t >= 0.5f && t - Time.deltaTime < 0.5f)
+
+                //if (t >= 0.5f && t < 0.5f + Time.deltaTime)
+                if (t >= 0.5f && !isMiddleCalled)
+                {
+                    isMiddleCalled = true;
+                    // You are at the middle of the rotation, trigger the event here
+                    onMiddle?.Invoke();
+                }
+                yield return null;
+            }
+            // reset and prevention miss leading calls
+            t = 0;
+            onComplete?.Invoke();
+
+        }
+
     }
 }
