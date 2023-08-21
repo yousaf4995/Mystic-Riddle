@@ -1972,6 +1972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 2
   colums: 2
+  cardSpawnType: 0
   cardPrefab: {fileID: 3968183838269059354, guid: ee1f22baede42b340bbd0d1ba9fdc569, type: 3}
   cardContainer: {fileID: 1054705959}
   cardSprites:

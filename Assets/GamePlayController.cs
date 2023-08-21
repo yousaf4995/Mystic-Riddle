@@ -10,6 +10,9 @@ public class GamePlayController : MonoBehaviour
     public int rows = 2;
     [Range(2, 10)]
     public int colums = 2;
+    [Tooltip("Will assign ids and sprites to spawned cards according to its type")]
+    public CardSpawnType cardSpawnType= CardSpawnType.RowsWise;// will assign ids and sprites to spawned cards according to its type
+    [Space]
     public GameObject cardPrefab;
     public Transform cardContainer;
 
@@ -73,27 +76,13 @@ public class GamePlayController : MonoBehaviour
 
         if (cardDatasLoaded != null && cardDatasLoaded.Length > 0)
         {
-            // Debug.Log("populating from saved data"); 
+             Debug.Log("populating from saved data"); 
+
+            //// we dont need shuffel because we saved as it with lst shuffle 
 
             SpawnShuffledCards(cardDatasLoaded);
             ProgressionController.Instance.DeleteSavedDta();
-            //// we dont need shuffel because we saved as it is
-            //for (int i = 0; i < length; i++)
-            //{
-            //    int currentCardType = i % (length / 2); ;
-            //    GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
-            //    Card currentCard = cardGO.GetComponent<Card>();
-            //    CardData cData = cardDatasLoaded[i];
 
-            //    // cData.normalFaceSprite = cardSprites.normalSprite;
-            //    // cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
-
-            //    currentCard.CardData = cData;
-            //    currentCard.Init(cData, CardClicked, OnCardActionsComplete);
-
-            //    cardsInGamePlay.Add(currentCard.CardData);
-            //    ProgressionController.Instance.DeleteSavedDta();
-            //}
         }
         else
         {
@@ -101,21 +90,6 @@ public class GamePlayController : MonoBehaviour
             CardData[] cardsData = GenerateFreshCardData(length);
             ShuffleArray(cardsData);
             SpawnShuffledCards(cardsData);
-
-            //for (int i = 0; i < length; i++)
-            //{
-            //    int currentCardType = i % (length / 2); ;
-            //    GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
-            //    Card currentCard = cardGO.GetComponent<Card>();
-            //    CardData cData = new CardData();
-            //    cData.CardType = currentCardType;
-            //    cData.normalFaceSprite = cardSprites.normalSprite;
-            //    cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
-            //    currentCard.CardData = cData;
-            //    currentCard.Init(cData, CardClicked, OnCardActionsComplete);
-
-            //    cardsInGamePlay.Add(currentCard.CardData);
-            //}
         }
 
 
@@ -150,17 +124,28 @@ public class GamePlayController : MonoBehaviour
         for (int i = 0; i < length; i++)
         {
             //according to sprite size
-          //  int currentCardType = i % cardSprites.cardSprites.Length;
+            //  int currentCardType = i % cardSprites.cardSprites.Length;
 
             // OR 
             //TODO can be choosed to populate only images as per card size like 5x2, 5 rows and 2 columns
-            int currentCardType = i % rows;
+
+            int currentCardType = i % rows;// budefault rows base
+
+            //(Tackled) it may create incorrect pair type more if sprites size is higher and higher
+            // sprite size should be equal or less
+            if (cardSpawnType == CardSpawnType.SpriteBase)
+                currentCardType = i % cardSprites.cardSprites.Length/2; /* .Length;*/
+
+            // it may also can create incorreect pair states more if sprites are less
+            // sprite size should be equal or greater
+            else if (cardSpawnType == CardSpawnType.CardsSizeBase)
+                currentCardType = i % (length / 2); 
 
 
             CardData cData = new CardData();
             cData.CardType = currentCardType;
             cData.normalFaceSprite = cardSprites.normalSprite;
-            cData.specificFaceSprite = cardSprites.cardSprites[currentCardType];
+            cData.specificFaceSprite = (currentCardType<cardSprites.cardSprites.Length)? cardSprites.cardSprites[currentCardType]: cardSprites.cardSprites[currentCardType / 2];
             freshCardData[i] = cData;
         }
 
