@@ -149,9 +149,14 @@ public class GamePlayController : MonoBehaviour
 
         for (int i = 0; i < length; i++)
         {
-            int currentCardType = i % cardSprites.cardSprites.Length;
-            // int currentCardType = i % (length / 2);
-            //  int spriteTypeIndex = i % cardSprites.cardSprites.Length;
+            //according to sprite size
+          //  int currentCardType = i % cardSprites.cardSprites.Length;
+
+            // OR 
+            //TODO can be choosed to populate only images as per card size like 5x2, 5 rows and 2 columns
+            int currentCardType = i % rows;
+
+
             CardData cData = new CardData();
             cData.CardType = currentCardType;
             cData.normalFaceSprite = cardSprites.normalSprite;
@@ -251,3 +256,4 @@ public struct SpriteData
     public Sprite normalSprite;
     public Sprite[] cardSprites;
 }
+public enum 
