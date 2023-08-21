@@ -19,12 +19,13 @@ public class GamePlayController : MonoBehaviour
     [Space]
     [Header("Sprites")]
     public SpriteData cardSprites;
-
     public List<CardData> cardsInGamePlay;
-
+   
+    [Space]
     [Header("Logic")]
     public Card firstCard;
     public Card secondCard;
+
 
     // private area
     CardGridLayout gridLayout;

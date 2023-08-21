@@ -15,6 +15,11 @@ namespace GameCard
         public float rotationSpeed = 1.5f;
         [Range(1, 20)]
         public float scaleSpeed = 2f;
+
+        [Space]
+        [Header("Test")]
+        public bool testGamePaly = false;
+        public TMPro.TMP_Text testIdTxt;
         private void Start()
         {
         }
@@ -23,8 +28,15 @@ namespace GameCard
             DoScale();
             AddListners(cardClickEvent, callBack);
             FillData(CardData);
+
+            DisplayTestId();
         }
 
+        void DisplayTestId()
+        {
+            testIdTxt.gameObject.SetActive(testGamePaly);
+            testIdTxt.text = string.Empty + CardData.CardType;// ToString();
+        }
         void AddListners(Action<Card> CardData, Action callBack)
         {
             cardBtn.onClick.RemoveListener(() => { CardClicked(this); }); // Remove the old listener
@@ -68,7 +80,6 @@ namespace GameCard
             cardBtn.interactable = true;
         }
 
-
         public void DoScale()
         {
             Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
@@ -99,7 +110,6 @@ namespace GameCard
 
         }
 
-
         void OnFlipStart()
         {
             //  Debug.Log("OnFlip Start : " + CardData.CardType);  
@@ -122,11 +132,7 @@ namespace GameCard
                 OncallBack?.Invoke();
             }
         }
-
-        void CallBack()
-        {
-
-        }
+     
         #region Events Subscription
         public void SubscribeOnCardClickedEvent(Action<Card> onClicked)
         {
