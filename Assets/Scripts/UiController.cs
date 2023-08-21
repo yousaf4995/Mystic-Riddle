@@ -9,6 +9,7 @@ public class UiController : Singleton<UiController>
 
     [Header("Scripts")]
     [SerializeField] private PauseScreen pauseScreen;
+    [SerializeField] private StartScreen startScreen;
     [SerializeField] private CompleteScreen completeScreen;
     [SerializeField] private GamePlayInfoPanel gamePlayInfoPanel;
     public PauseScreen PauseScreen { get => pauseScreen; set => pauseScreen = value; }
@@ -34,7 +35,7 @@ public class UiController : Singleton<UiController>
     // Start is called before the first frame update
     void Start()
     {
-      //  initialize();
+        startScreen.Initialized();
     }
     public void initialize()
     {
