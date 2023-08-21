@@ -24,7 +24,7 @@ public class ProgresssionSaver
         string json = JsonUtility.ToJson(wrapper);
         File.WriteAllText(Application.persistentDataPath + basePath, json);
 
-        Debug.Log(Application.persistentDataPath + basePath);
+       // Debug.Log(Application.persistentDataPath + basePath);
         onComplete?.Invoke();
     }
 

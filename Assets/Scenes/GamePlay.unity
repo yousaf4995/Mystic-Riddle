@@ -2714,18 +2714,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 126
+    m_Left: 10
     m_Right: 12
     m_Top: 10
     m_Bottom: 24
   m_ChildAlignment: 1
   gridRows: 3
   gridColumns: 3
-  cellSize: {x: 159.88826, y: 159.88826}
+  cellSize: {x: -13.333333, y: -13.333333}
   cellSpacing: {x: 10, y: 10}
   paddingFactor: 10
-  parentWidth: 753.36975
-  parentHeight: 519.6648
+  parentWidth: 0
+  parentHeight: 0
 --- !u!114 &1054705964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3503,8 +3503,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1313397808}
-  correctClip: {fileID: 0}
-  inCorrectClip: {fileID: 0}
+  gameStartClip: {fileID: 8300000, guid: 028996058c868f64e9c8970172ba30ed, type: 3}
+  correctClip: {fileID: 8300000, guid: 60d41b899655b684c94b25bccd395112, type: 3}
+  inCorrectClip: {fileID: 8300000, guid: 65485291378889840908786b6f394b10, type: 3}
   btnClip: {fileID: 8300000, guid: b276d28265f20e842bc9fa5970c66607, type: 3}
   flipClip: {fileID: 8300000, guid: b6e3eb0f890e56f4cab45840de5a9e40, type: 3}
   gameWinClip: {fileID: 8300000, guid: 494000b047aeda742b15b087d8f46fd0, type: 3}

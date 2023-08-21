@@ -66,6 +66,7 @@ public class PauseScreen : MonoBehaviour
         {
             Debug.Log("Data Saved Successfuly");
             GameController.Toast.ShowToast("Game Saved Successfuly");
+            SoundManager.Instance.PlayCorrectSound();
         });
     }
     void PopulateProgressionDta()

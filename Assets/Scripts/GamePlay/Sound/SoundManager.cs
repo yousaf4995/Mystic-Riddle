@@ -5,7 +5,8 @@ using UnityEngine;
 public class SoundManager : Singleton<SoundManager>
 {
     [SerializeField] AudioSource audioSource;
-
+    [Space]
+    public AudioClip gameStartClip;
     [Space]
     public AudioClip correctClip;
     public AudioClip inCorrectClip;
@@ -22,6 +23,11 @@ public class SoundManager : Singleton<SoundManager>
     void Start()
     {
 
+    }
+
+    public void PlayGameStartSound()
+    {
+        PlayClip(gameStartClip);
     }
 
     public void PlayButtonClickSound()

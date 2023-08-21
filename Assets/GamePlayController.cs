@@ -116,13 +116,16 @@ public class GamePlayController : MonoBehaviour
             //    cardsInGamePlay.Add(currentCard.CardData);
             //}
         }
-        //  gridLayout.CalculateLayoutInputHorizontal();
+
+
         gridLayout.CalculateLayoutInputVertical();
 
         ProgressionController pc = GameController.ProgressionController;
 
         UiController.GamePlayInfoPanel.SetCorrectCardsMacth(pc.CorrectCardsScore);
         UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(pc.inCorrectCardsScore);
+
+        SoundManager.Instance.PlayGameStartSound();
     }
     void SpawnShuffledCards(CardData[] shuffledCardData)
     {
@@ -187,6 +190,7 @@ public class GamePlayController : MonoBehaviour
                 // Debug.Log("Correct Match");
                 string[] successText = { "Nice", "Weldone", "Aawasome" };
                 GameController.Toast.ShowToast(successText[UnityEngine.Random.Range(0, successText.Length)]);
+                SoundManager.Instance.PlayCorrectSound();
 
                 firstCard.CardMatched();
                 firstCard = null;
@@ -200,7 +204,7 @@ public class GamePlayController : MonoBehaviour
                 //  Debug.Log("In Correct Match");
 
                 GameController.Toast.ShowToast();
-
+                SoundManager.Instance.PlayInCorrectSound();
                 firstCard.CardMissMatched();
                 firstCard = null;
 
@@ -234,6 +238,7 @@ public class GamePlayController : MonoBehaviour
     void DisplayComplete()
     {
         UiController.CompleteScreen.DisplayCompleteScreen();// loose screen
+        SoundManager.Instance.PlayWinSound();
     }
 }
 
