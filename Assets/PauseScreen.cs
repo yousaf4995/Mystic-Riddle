@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseScreen : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PauseScreen : MonoBehaviour
     public GameObject pausePanel;
     public UIButton resumebtn;
     public UIButton saveGameButton;
+    public UIButton replayButton;
 
     [Space]
     public InfoTexts gamePauseInfoTxts;
@@ -37,6 +39,9 @@ public class PauseScreen : MonoBehaviour
 
         saveGameButton.onClick.RemoveListener(SaveGame);
         saveGameButton.onClick.AddListener(SaveGame);
+
+        replayButton.onClick.RemoveListener(RePlayGame);
+        replayButton.onClick.AddListener(RePlayGame);
     }
 
     public void DisplayPauseScreen()
@@ -51,6 +56,11 @@ public class PauseScreen : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    void RePlayGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
+    }
     //save game
     void SaveGame()
     {

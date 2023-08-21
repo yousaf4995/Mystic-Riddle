@@ -42,7 +42,6 @@ public class CompleteScreen : MonoBehaviour
          completePanel.SetActive(false);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Time.timeScale = 0.000001f;
 
     }
     public void DisplayCompleteScreen()
