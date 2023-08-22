@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using CardModel;
+using System.Collections;
+
 namespace GameCard
 {
     public class Card : AbstractCard
@@ -20,6 +22,11 @@ namespace GameCard
         [Header("Test")]
         public bool testGamePaly = false;
         public TMPro.TMP_Text testIdTxt;
+
+
+        // private area
+        Coroutine FlipCoroutine;
+
         private void Start()
         {
         }
@@ -51,17 +58,21 @@ namespace GameCard
         void FillData(CardData cData)
         {
             this.CardData = cData;
-            cardFaceImage.sprite = this.CardData.normalFaceSprite;
+            //cardFaceImage.sprite = this.CardData.normalFaceSprite;
+            ChangeSprite();
         }
-
+        void ChangeSprite()
+        {
+            cardFaceImage.sprite = IsFliped ? this.CardData.specificFaceSprite : CardData.normalFaceSprite;
+        }
         public override void Flip()
         {
 
         }
         public override void CardClicked(Card card)
         {
-            OnCardClicked?.Invoke(card);
             FlipSpecificFace();
+            OnCardClicked?.Invoke(card);
             // Debug.Log("Card Clicked with Card Type : " + CardData.CardType);
         }
 
@@ -74,6 +85,13 @@ namespace GameCard
         }
         public override void CardMissMatched()
         {
+            // if we want to display flip specific animation complete and then missmatch animation then
+            // uncomment this and comment line 91 to 96 .
+            // StartCoroutine(CheckMissMatchCard());
+
+            isFliped = true;
+
+            ChangeSprite();
             FlipNormalFace();
 
             CardData.cardState = CardState.InCorrect;
@@ -87,11 +105,24 @@ namespace GameCard
 
             Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
 
-            StopCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));
+            // StopCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));
             StartCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));
 
         }
 
+        public  IEnumerator CheckMissMatchCard()
+        {
+            Debug.Log("Before Id : " + CardData.CardType);
+            if (FlipCoroutine != null)
+                yield return FlipCoroutine;
+            else
+                yield return null;
+
+            Debug.Log("After Id : "+CardData.CardType);
+            FlipNormalFace();
+
+            StopCoroutine(CheckMissMatchCard());
+        }
         public override void FlipNormalFace()
         {
             cardBtn.interactable = true;
@@ -99,8 +130,8 @@ namespace GameCard
 
             Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
 
-            StopCoroutine(transformToRotate.DoRotation(0, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
-            StartCoroutine(transformToRotate.DoRotation(0, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
+            //    StopCoroutine(transformToRotate.DoRotation(0, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
+            StartCoroutine(transformToRotate.DoRotationNormal(rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
 
         }
         public override void FlipSpecificFace()
@@ -108,8 +139,8 @@ namespace GameCard
             isFliped = true;
             cardBtn.interactable = false;
             Transform transformToRotate = transform;
-            StopCoroutine(transformToRotate.DoRotation(180, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
-            StartCoroutine(transformToRotate.DoRotation(180, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
+            // StopCoroutine(transformToRotate.DoRotation(180, rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
+           StartCoroutine(transformToRotate.DoRotateSpecific(rotationSpeed, OnFlipStart, OnFlipMiddle, OnFlipComplete));
 
         }
 
@@ -135,7 +166,7 @@ namespace GameCard
                 OncallBack?.Invoke();
             }
         }
-     
+
         #region Events Subscription
         public void SubscribeOnCardClickedEvent(Action<Card> onClicked)
         {

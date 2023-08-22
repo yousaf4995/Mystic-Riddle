@@ -154,7 +154,7 @@ public class GamePlayController : MonoBehaviour
             Card currentCard = cardGO.GetComponent<Card>();
             CardData cData = shuffledCardData[i];
             currentCard.CardData = cData;
-            currentCard.Init(cData, CardClicked, OnCardActionsComplete);
+            currentCard.Init(cData, CardClicked,null);
 
             cardGO.transform.localScale = (cData.cardState == CardState.Correct) ? Vector3.zero : Vector3.one;
 
@@ -216,6 +216,7 @@ public class GamePlayController : MonoBehaviour
         else if (secondCard == null)
             secondCard = cardData;
 
+        OnCardActionsComplete();
     }
     private void OnCardActionsComplete()
     {

@@ -7,7 +7,8 @@ public enum CardState
 {
     None,
     Correct,
-    InCorrect
+    InCorrect,
+    isClicked
 }
 
 public enum CardSpawnType

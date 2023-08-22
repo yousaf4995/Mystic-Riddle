@@ -29,7 +29,7 @@ public class PauseScreen : MonoBehaviour
 
     void Start()
     {
-      
+
     }
 
     public void Initialized()
@@ -92,10 +92,7 @@ public class PauseScreen : MonoBehaviour
             + " / " +
                   GameController.ProgressionController.CardData.maxCardToPlay;
 
-        gamePauseInfoTxts.attemptsCardsInfoTxt.text =
-          GameController.ProgressionController.CardData.attemptsCounter
-      + " / " +
-            GameController.ProgressionController.CardData.maxCardToPlay;
+        gamePauseInfoTxts.attemptsCardsInfoTxt.text = GameController.ProgressionController.CardData.attemptsCounter.ToString();
 
     }
 }

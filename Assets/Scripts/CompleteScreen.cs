@@ -39,7 +39,7 @@ public class CompleteScreen : MonoBehaviour
     // Pause Region
     void PlayGameBtnClick()
     {
-         completePanel.SetActive(false);
+        completePanel.SetActive(false);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
@@ -53,16 +53,13 @@ public class CompleteScreen : MonoBehaviour
 
     void PopulateProgressionDta()
     {
-      
-    gameCompleteInfoTxts.correctCardsInfoTxt.text = 
-            GameController.ProgressionController.CardData.correctCardsPlayed
-        +" / " +
-              GameController.ProgressionController.CardData.maxCardToPlay;
 
-        gameCompleteInfoTxts.attemptsCardsInfoTxt.text =
-          GameController.ProgressionController.CardData.attemptsCounter
-      + " / " +
-            GameController.ProgressionController.CardData.maxCardToPlay;
+        gameCompleteInfoTxts.correctCardsInfoTxt.text =
+                GameController.ProgressionController.CardData.correctCardsPlayed
+            + " / " +
+                  GameController.ProgressionController.CardData.maxCardToPlay;
+
+        gameCompleteInfoTxts.attemptsCardsInfoTxt.text = GameController.ProgressionController.CardData.attemptsCounter.ToString();
 
     }
 }
