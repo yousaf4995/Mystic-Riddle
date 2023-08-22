@@ -54,25 +54,30 @@ public class PauseScreen : MonoBehaviour
     {
         pausePanel.SetActive(false);
         Time.timeScale = 1;
+        GameController.GamePlayTimer.PauseGameTimer(false);
     }
 
     void RePlayGame()
     {
+        GameController.ProgressionController.CardData = null;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
         Time.timeScale = 1;
     }
     //save game
     void SaveGame()
     {
 
-        CardData[] cData = GameController.GamePlayController.cardsInGamePlay.ToArray();
-        if (cData == null || cData.Length < 1)
+        CardDataWrapper wrapper = GameController.Instance.ProgressionController.CardData;
+        wrapper.cardDataArray = GameController.GamePlayController.cardsInGamePlay.ToArray();
+        if (wrapper.cardDataArray == null || wrapper.cardDataArray.Length < 1)
         {
             print("No data to save ");
             return;
 
         }
-        GameController.ProgressionController.SaveGameData(cData, () =>
+
+        GameController.ProgressionController.SaveGameData(wrapper, () =>
         {
             Debug.Log("Data Saved Successfuly");
             GameController.Toast.ShowToast("Game Saved Successfuly");
@@ -83,14 +88,14 @@ public class PauseScreen : MonoBehaviour
     {
 
         gamePauseInfoTxts.correctCardsInfoTxt.text =
-                GameController.ProgressionController.CorrectCardsScore
+                GameController.ProgressionController.CardData.correctCardsPlayed
             + " / " +
-                  GameController.ProgressionController.MaxCardToPlay;
+                  GameController.ProgressionController.CardData.maxCardToPlay;
 
-        gamePauseInfoTxts.inCorrectCardsInfoTxt.text =
-          GameController.ProgressionController.inCorrectCardsScore
+        gamePauseInfoTxts.attemptsCardsInfoTxt.text =
+          GameController.ProgressionController.CardData.attemptsCounter
       + " / " +
-            GameController.ProgressionController.MaxCardToPlay;
+            GameController.ProgressionController.CardData.maxCardToPlay;
 
     }
 }

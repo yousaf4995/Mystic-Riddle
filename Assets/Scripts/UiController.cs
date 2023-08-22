@@ -13,6 +13,7 @@ public class UiController : Singleton<UiController>
     [SerializeField] private CompleteScreen completeScreen;
     [SerializeField] private GamePlayInfoPanel gamePlayInfoPanel;
     public PauseScreen PauseScreen { get => pauseScreen; set => pauseScreen = value; }
+    public StartScreen StartScreen { get => startScreen; set => startScreen = value; }
     public CompleteScreen CompleteScreen { get => completeScreen; set => completeScreen = value; }
     public GamePlayInfoPanel GamePlayInfoPanel { get => gamePlayInfoPanel; set => gamePlayInfoPanel = value; }
 
@@ -35,7 +36,7 @@ public class UiController : Singleton<UiController>
     // Start is called before the first frame update
     void Start()
     {
-        startScreen.Initialized();
+       
     }
     public void initialize()
     {
@@ -67,7 +68,7 @@ public class UiController : Singleton<UiController>
     void PauseBtnClick()
     {
         PauseScreen.DisplayPauseScreen();
-        Time.timeScale = 0.000001f;
-
+      //  Time.timeScale = 0.000001f;
+        GameController.GamePlayTimer.PauseGameTimer(true);
     }
 }

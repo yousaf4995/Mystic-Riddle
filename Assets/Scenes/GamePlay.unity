@@ -419,7 +419,7 @@ MonoBehaviour:
   playGameBtn: {fileID: 1709290882}
   gameCompleteInfoTxts:
     correctCardsInfoTxt: {fileID: 538839365}
-    inCorrectCardsInfoTxt: {fileID: 160066784}
+    attemptsCardsInfoTxt: {fileID: 160066784}
 --- !u!1 &160066782
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 160066785}
   - component: {fileID: 160066784}
   m_Layer: 5
-  m_Name: Incorrect Status Text (TMP) (1)
+  m_Name: Attempts Status Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.8
+  m_fontSize: 59.85
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -722,6 +722,7 @@ MonoBehaviour:
   correctCardsScore: 0
   incorrectCardsScore: 0
   maxCardToPlay: 0
+  attemptsCounter: 0
 --- !u!4 &232086857
 Transform:
   m_ObjectHideFlags: 0
@@ -749,7 +750,7 @@ GameObject:
   - component: {fileID: 283758987}
   - component: {fileID: 283758986}
   m_Layer: 5
-  m_Name: InCorrect Area
+  m_Name: Attempts Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1362,7 +1363,7 @@ GameObject:
   - component: {fileID: 447493981}
   - component: {fileID: 447493980}
   m_Layer: 5
-  m_Name: Incorrect Status Header Text (TMP)
+  m_Name: Attempts Status Header Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1408,7 +1409,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'InCorrect Played: '
+  m_text: 'Attempts: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -1435,7 +1436,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15.95
+  m_fontSize: 29.3
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1656,7 +1657,7 @@ GameObject:
   - component: {fileID: 516813247}
   - component: {fileID: 516813246}
   m_Layer: 5
-  m_Name: InCorrect Area
+  m_Name: Attempts Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2236,7 +2237,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12.25
+  m_fontSize: 17.2
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2298,7 +2299,7 @@ GameObject:
   - component: {fileID: 621797083}
   - component: {fileID: 621797082}
   m_Layer: 5
-  m_Name: Incorrect Text (TMP) (4)
+  m_Name: Attempts Text (TMP) (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2433,7 +2434,7 @@ GameObject:
   - component: {fileID: 650199738}
   - component: {fileID: 650199737}
   m_Layer: 5
-  m_Name: Incorrect Status Text (TMP) (1)
+  m_Name: Attempts Status Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2568,7 +2569,7 @@ GameObject:
   - component: {fileID: 689060934}
   - component: {fileID: 689060933}
   m_Layer: 5
-  m_Name: Incorrect Status Header Text (TMP)
+  m_Name: Attempts Status Header Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2614,7 +2615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'InCorrect Played: '
+  m_text: 'Attempts: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -2641,12 +2642,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15.95
+  m_fontSize: 20
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 10
-  m_fontSizeMax: 72
+  m_fontSizeMax: 20
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2776,7 +2777,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 54.1
+  m_fontSize: 53.9
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3074,7 +3075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamePlayInfoTxts:
     correctCardsInfoTxt: {fileID: 1782622638}
-    inCorrectCardsInfoTxt: {fileID: 621797082}
+    attemptsCardsInfoTxt: {fileID: 621797082}
 --- !u!1 &804438231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4001,18 +4002,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 126
+    m_Left: 127
     m_Right: 12
-    m_Top: 9
+    m_Top: 10
     m_Bottom: 24
   m_ChildAlignment: 1
   gridRows: 3
   gridColumns: 3
-  cellSize: {x: 159.8402, y: 159.8402}
+  cellSize: {x: 159.77771, y: 159.77771}
   cellSpacing: {x: 10, y: 10}
   paddingFactor: 10
-  parentWidth: 753.3896
-  parentHeight: 519.52057
+  parentWidth: 753.4153
+  parentHeight: 519.3331
 --- !u!114 &1054705964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4180,7 +4181,7 @@ GameObject:
   - component: {fileID: 1136106733}
   - component: {fileID: 1136106732}
   m_Layer: 5
-  m_Name: Incorrect Header Text (TMP) (3)
+  m_Name: Attempts Header Text (TMP) (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4226,7 +4227,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: InCorrect
+  m_text: Attempts
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 463d8d797fabb0548b8506340dc53c49, type: 2}
@@ -7161,7 +7162,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.75
+  m_fontSize: 44.7
   m_fontSizeBase: 21.48
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7962,4 +7963,4 @@ MonoBehaviour:
   replayButton: {fileID: 1805722202}
   gamePauseInfoTxts:
     correctCardsInfoTxt: {fileID: 804438233}
-    inCorrectCardsInfoTxt: {fileID: 650199737}
+    attemptsCardsInfoTxt: {fileID: 650199737}

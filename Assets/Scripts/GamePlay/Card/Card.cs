@@ -82,6 +82,9 @@ namespace GameCard
 
         public void DoScale()
         {
+            if (CardData.cardState == CardState.Correct)
+                return;
+
             Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
 
             StopCoroutine(transformToRotate.DoScale(Vector3.one, scaleSpeed));

@@ -48,21 +48,21 @@ public class CompleteScreen : MonoBehaviour
     {
         completePanel.SetActive(true);
         PopulateProgressionDta();
-
+        GameController.GamePlayTimer.PauseGameTimer(true);
     }
 
     void PopulateProgressionDta()
     {
       
     gameCompleteInfoTxts.correctCardsInfoTxt.text = 
-            GameController.ProgressionController.CorrectCardsScore
+            GameController.ProgressionController.CardData.correctCardsPlayed
         +" / " +
-              GameController.ProgressionController.MaxCardToPlay;
+              GameController.ProgressionController.CardData.maxCardToPlay;
 
-        gameCompleteInfoTxts.inCorrectCardsInfoTxt.text =
-          GameController.ProgressionController.inCorrectCardsScore
+        gameCompleteInfoTxts.attemptsCardsInfoTxt.text =
+          GameController.ProgressionController.CardData.attemptsCounter
       + " / " +
-            GameController.ProgressionController.MaxCardToPlay;
+            GameController.ProgressionController.CardData.maxCardToPlay;
 
     }
 }

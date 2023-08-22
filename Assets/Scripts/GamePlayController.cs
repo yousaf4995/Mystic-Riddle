@@ -11,7 +11,7 @@ public class GamePlayController : MonoBehaviour
     [Range(2, 10)]
     public int colums = 2;
     [Tooltip("Will assign ids and sprites to spawned cards according to its type")]
-    public CardSpawnType cardSpawnType= CardSpawnType.RowsWise;// will assign ids and sprites to spawned cards according to its type
+    public CardSpawnType cardSpawnType = CardSpawnType.RowsWise;// will assign ids and sprites to spawned cards according to its type
     [Space]
     public GameObject cardPrefab;
     public Transform cardContainer;
@@ -20,7 +20,7 @@ public class GamePlayController : MonoBehaviour
     [Header("Sprites")]
     public SpriteData cardSprites;
     public List<CardData> cardsInGamePlay;
-   
+
     [Space]
     [Header("Logic")]
     public Card firstCard;
@@ -37,6 +37,20 @@ public class GamePlayController : MonoBehaviour
 
             if (!gc || gc == null)
                 gc = FindAnyObjectByType<GameController>();
+
+            return gc;
+
+        }
+    }
+
+    ProgressionController ProgressionController
+    {
+        get
+        {
+            var gc = GameController.Instance.ProgressionController;
+
+            if (!gc || gc == null)
+                gc = FindAnyObjectByType<ProgressionController>();
 
             return gc;
 
@@ -60,35 +74,57 @@ public class GamePlayController : MonoBehaviour
     {
         Time.timeScale = 1;
         gridLayout = cardContainer.GetComponent<CardGridLayout>();
-        //InitializeGame();
+
+
+        var cardDatasLoaded = ProgressionController.LoadGamedata();
+        if (cardDatasLoaded.cardDataArray != null && cardDatasLoaded.cardDataArray.Length > 0)
+        {
+            InitializeGame();
+        }
+        else
+        {
+            UiController.Instance.StartScreen.Initialized();
+        }
+
     }
 
     public void InitializeGame()
     {
         cardsInGamePlay.Clear();
         UiController.initialize();
-        gridLayout.gridRows = rows;
-        gridLayout.gridColumns = colums;
 
-        int length = (rows * colums);
-        GameController.ProgressionController.MaxCardToPlay = length / 2;
 
-        CardData[] cardDatasLoaded = ProgressionController.Instance.LoadGamedata();
+        var cardDataLoaded = ProgressionController.LoadGamedata();
 
-        if (cardDatasLoaded != null && cardDatasLoaded.Length > 0)
+        if (cardDataLoaded.cardDataArray != null && cardDataLoaded.cardDataArray.Length > 0)
         {
-             Debug.Log("populating from saved data"); 
-
+            Debug.Log("populating from saved data");
+            GameController.Toast.ShowToast("Card are placed from your Saved Data");
             //// we dont need shuffel because we saved as it with lst shuffle 
 
-            SpawnShuffledCards(cardDatasLoaded);
-            ProgressionController.Instance.DeleteSavedDta();
+            gridLayout.gridRows = rows = cardDataLoaded.rows;
+            gridLayout.gridColumns = colums = cardDataLoaded.colums;
+
+            SpawnShuffledCards(cardDataLoaded.cardDataArray);
+            ProgressionController.DeleteSavedDta();
 
         }
         else
         {
             Debug.Log("populating from fresh data");
-            CardData[] cardsData = GenerateFreshCardData(length);
+
+
+            gridLayout.gridRows = rows;
+            gridLayout.gridColumns = colums;
+
+
+            int totallCards = (rows * colums);
+
+            ProgressionController.CardData.rows = rows;
+            ProgressionController.CardData.colums = colums;
+
+            CardData[] cardsData = GenerateFreshCardData(totallCards);
+
             ShuffleArray(cardsData);
             SpawnShuffledCards(cardsData);
         }
@@ -96,10 +132,12 @@ public class GamePlayController : MonoBehaviour
 
         gridLayout.CalculateLayoutInputVertical();
 
-        ProgressionController pc = GameController.ProgressionController;
 
-        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(pc.CorrectCardsScore);
-        UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(pc.inCorrectCardsScore);
+        int length = (rows * colums);
+        ProgressionController.CardData.maxCardToPlay = length / 2;
+
+        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(ProgressionController.CardData.correctCardsPlayed);
+        UiController.GamePlayInfoPanel.SetCardAttempts(ProgressionController.CardData.attemptsCounter);
 
         SoundManager.Instance.PlayGameStartSound();
     }
@@ -113,7 +151,7 @@ public class GamePlayController : MonoBehaviour
             currentCard.CardData = cData;
             currentCard.Init(cData, CardClicked, OnCardActionsComplete);
 
-            cardGO.transform.localScale = (cData?.cardState == CardState.Correct) ? Vector3.zero : Vector3.one;
+            cardGO.transform.localScale = (cData.cardState == CardState.Correct) ? Vector3.zero : Vector3.one;
 
             cardsInGamePlay.Add(currentCard.CardData);
         }
@@ -135,18 +173,18 @@ public class GamePlayController : MonoBehaviour
             //(Tackled) it may create incorrect pair type more if sprites size is higher and higher
             // sprite size should be equal or less
             if (cardSpawnType == CardSpawnType.SpriteBase)
-                currentCardType = i % cardSprites.cardSprites.Length/2; /* .Length;*/
+                currentCardType = i % cardSprites.cardSprites.Length / 2; /* .Length;*/
 
             // it may also can create incorreect pair states more if sprites are less
             // sprite size should be equal or greater
             else if (cardSpawnType == CardSpawnType.CardsSizeBase)
-                currentCardType = i % (length / 2); 
+                currentCardType = i % (length / 2);
 
 
             CardData cData = new CardData();
             cData.CardType = currentCardType;
             cData.normalFaceSprite = cardSprites.normalSprite;
-            cData.specificFaceSprite = (currentCardType<cardSprites.cardSprites.Length)? cardSprites.cardSprites[currentCardType]: cardSprites.cardSprites[currentCardType / 2];
+            cData.specificFaceSprite = (currentCardType < cardSprites.cardSprites.Length) ? cardSprites.cardSprites[currentCardType] : cardSprites.cardSprites[currentCardType / 2];
             freshCardData[i] = cData;
         }
 
@@ -179,6 +217,8 @@ public class GamePlayController : MonoBehaviour
         print("OnCardActionsComplete");
         if (firstCard != null && secondCard != null)
         {
+            UiController.GamePlayInfoPanel.SetCardAttempts(++GameController.ProgressionController.CardData.attemptsCounter);
+
             if (firstCard.CardData.CardType == secondCard.CardData.CardType)
             {
                 // Debug.Log("Correct Match");
@@ -212,20 +252,20 @@ public class GamePlayController : MonoBehaviour
 
     void AddCorrectScore()
     {
-        ProgressionController pc = GameController.ProgressionController;
-        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(++pc.CorrectCardsScore);
-        if (pc.CorrectCardsScore >= pc.MaxCardToPlay)
+
+        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(++ProgressionController.CardData.correctCardsPlayed);
+        if (ProgressionController.CardData.correctCardsPlayed >= ProgressionController.CardData.maxCardToPlay)
         {
             DisplayComplete();
         }
     }
     void AddInCorrectScore()
     {
-        ProgressionController pc = GameController.ProgressionController;
-        UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(++pc.inCorrectCardsScore);
-        if (pc.inCorrectCardsScore >= pc.MaxCardToPlay)
+
+        UiController.GamePlayInfoPanel.SetInCorrectCardsMacth(++ProgressionController.CardData.inCorrectCardsPlayed);
+        if (ProgressionController.CardData.inCorrectCardsPlayed >= ProgressionController.CardData.maxCardToPlay)
         {
-            DisplayComplete();
+            // DisplayComplete();
         }
     }
 

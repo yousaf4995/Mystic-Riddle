@@ -9,19 +9,15 @@ public class ProgresssionSaver
     string basePath = "cards.json";
 
     // Calling method to save card data
-    public void SaveCards(CardData[] gameplayCards, Action onComplete = null)
+    public void SaveCards(CardDataWrapper gameplayCards, Action onComplete = null)
     {
         SaveCardDataToFile(gameplayCards, onComplete);
     }
-    private void SaveCardDataToFile(CardData[] cardDataArray, Action onComplete = null)
+    private void SaveCardDataToFile(CardDataWrapper cardDataArray, Action onComplete = null)
     {
-        CardDataWrapper wrapper = new CardDataWrapper
-        {
-            correctCardsPlayed = GameController.Instance.ProgressionController.CorrectCardsScore,
-            inCorrectCardsPlayed = GameController.Instance.ProgressionController.inCorrectCardsScore,
-            cardDataArray = cardDataArray 
-        };
-        string json = JsonUtility.ToJson(wrapper);
+       
+        string json = JsonUtility.ToJson(cardDataArray);
+        Debug.Log(json);
         File.WriteAllText(Application.persistentDataPath + basePath, json);
 
        // Debug.Log(Application.persistentDataPath + basePath);
@@ -31,23 +27,21 @@ public class ProgresssionSaver
     // load
 
     // Calling method to load card data
-    public CardData[] LoadCards()
+    public CardDataWrapper LoadCards()
     {
         return LoadCardDataFromFile();
     }
-    private CardData[] LoadCardDataFromFile()
+    private CardDataWrapper LoadCardDataFromFile()
     {
+        CardDataWrapper wrapper = new CardDataWrapper();
         if (File.Exists(Application.persistentDataPath + basePath))
         {
             string json = File.ReadAllText(Application.persistentDataPath + basePath);
-            CardDataWrapper wrapper = JsonUtility.FromJson<CardDataWrapper>(json);
+             wrapper = JsonUtility.FromJson<CardDataWrapper>(json);
 
-            GameController.Instance.ProgressionController.CorrectCardsScore = wrapper.correctCardsPlayed;
-            GameController.Instance.ProgressionController.inCorrectCardsScore = wrapper.inCorrectCardsPlayed;
-
-            return wrapper.cardDataArray;
+            return wrapper;
         }
-        return null;
+        return wrapper;
     }
 
     public void DeleteSavedDta()
@@ -70,5 +64,10 @@ public class CardDataWrapper
 {
     public int correctCardsPlayed;
     public int inCorrectCardsPlayed;
+    public int attemptsCounter;
+    public int maxCardToPlay;
+    [Space]
+    public int rows;
+    public int colums;
     public CardData[] cardDataArray;
 }
