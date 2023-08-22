@@ -75,6 +75,8 @@ public class GamePlayController : MonoBehaviour
         Time.timeScale = 1;
         gridLayout = cardContainer.GetComponent<CardGridLayout>();
 
+        GameController.GamePlayTimer.UnSubscribeTimerComplete(OnTimerEnd);
+        GameController.GamePlayTimer.SubscribeTimerComplete(OnTimerEnd);
 
         var cardDatasLoaded = ProgressionController.LoadGamedata();
         if (cardDatasLoaded.cardDataArray != null && cardDatasLoaded.cardDataArray.Length > 0)
@@ -88,6 +90,7 @@ public class GamePlayController : MonoBehaviour
 
     }
 
+   
     public void InitializeGame()
     {
         cardsInGamePlay.Clear();
@@ -140,6 +143,8 @@ public class GamePlayController : MonoBehaviour
         UiController.GamePlayInfoPanel.SetCardAttempts(ProgressionController.CardData.attemptsCounter);
 
         SoundManager.Instance.PlayGameStartSound();
+
+        GameController.GamePlayTimer.RestartTimer();
     }
     void SpawnShuffledCards(CardData[] shuffledCardData)
     {
@@ -273,6 +278,13 @@ public class GamePlayController : MonoBehaviour
     {
         UiController.CompleteScreen.DisplayCompleteScreen();// loose screen
         SoundManager.Instance.PlayWinSound();
+    }
+
+    //Timer 
+    private void OnTimerEnd()
+    {
+        //TODO : Fail, Time Over or complete screen
+        DisplayComplete();
     }
 }
 

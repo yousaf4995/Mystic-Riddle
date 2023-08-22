@@ -25,10 +25,10 @@ public class GamePlayTimer : MonoBehaviour
 
     void Start()
     {
-        Init();
+      //  Init();
     }
 
-    void Init()
+     void Init()
     {
         elapedTime = gameplayTime;
         lastUpdatedTime = elapedTime;
