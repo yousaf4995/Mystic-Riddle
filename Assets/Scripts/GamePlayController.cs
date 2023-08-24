@@ -28,15 +28,17 @@ public class GamePlayController : MonoBehaviour
 
 
     // private area
+    //  bool isAutoSaveOn => PlayerPrefsManager.IsAutoSavedEnable();
+    bool isAutoSaveOn = false;
     CardGridLayout gridLayout;
-    GameController GameController
+    GameManager GameController
     {
         get
         {
-            var gc = GameController.Instance;
+            var gc = GameManager.Instance;
 
             if (!gc || gc == null)
-                gc = FindAnyObjectByType<GameController>();
+                gc = FindAnyObjectByType<GameManager>();
 
             return gc;
 
@@ -47,7 +49,7 @@ public class GamePlayController : MonoBehaviour
     {
         get
         {
-            var gc = GameController.Instance.ProgressionController;
+            var gc = GameManager.Instance.ProgressionController;
 
             if (!gc || gc == null)
                 gc = FindAnyObjectByType<ProgressionController>();
@@ -90,51 +92,36 @@ public class GamePlayController : MonoBehaviour
 
     }
 
-   
+
     public void InitializeGame()
     {
         cardsInGamePlay.Clear();
         UiController.initialize();
 
-
         var cardDataLoaded = ProgressionController.LoadGamedata();
 
         if (cardDataLoaded.cardDataArray != null && cardDataLoaded.cardDataArray.Length > 0)
         {
-            Debug.Log("populating from saved data");
-            GameController.Toast.ShowToast("Card are placed from your Saved Data");
-            //// we dont need shuffel because we saved as it with lst shuffle 
-
-            gridLayout.gridRows = rows = cardDataLoaded.rows;
-            gridLayout.gridColumns = colums = cardDataLoaded.colums;
-
-            SpawnShuffledCards(cardDataLoaded.cardDataArray);
+            SavedGameLoad(cardDataLoaded);
+          
+            // accidental missleading content management
+          //  print("InitializeGame :" + AllCardsArePlayed());
+            //if (AllCardsArePlayed())
+            //{
+            //    FreshGameLoad();
+            //}
             ProgressionController.DeleteSavedDta();
 
         }
         else
         {
             Debug.Log("populating from fresh data");
-
-
-            gridLayout.gridRows = rows;
-            gridLayout.gridColumns = colums;
-
-
-            int totallCards = (rows * colums);
-
-            ProgressionController.CardData.rows = rows;
-            ProgressionController.CardData.colums = colums;
-
-            CardData[] cardsData = GenerateFreshCardData(totallCards);
-
-            ShuffleArray(cardsData);
-            SpawnShuffledCards(cardsData);
+            FreshGameLoad();
         }
 
 
         gridLayout.CalculateLayoutInputVertical();
-
+        isAutoSaveOn = PlayerPrefsManager.IsAutoSavedEnable();
 
         int length = (rows * colums);
         ProgressionController.CardData.maxCardToPlay = length / 2;
@@ -146,6 +133,36 @@ public class GamePlayController : MonoBehaviour
 
         GameController.GamePlayTimer.RestartTimer();
     }
+
+    void FreshGameLoad()
+    {
+
+        gridLayout.gridRows = rows;
+        gridLayout.gridColumns = colums;
+
+
+        int totallCards = (rows * colums);
+
+        ProgressionController.CardData.rows = rows;
+        ProgressionController.CardData.colums = colums;
+
+        CardData[] cardsData = GenerateFreshCardData(totallCards);
+
+        ShuffleArray(cardsData);
+        SpawnShuffledCards(cardsData);
+    }
+    void SavedGameLoad( CardDataWrapper cardDataLoaded)
+    {
+        GameController.Toast.ShowToast("Placed from Saved Data");
+        //// we dont need shuffel because we saved as it with lst shuffle 
+
+        gridLayout.gridRows = rows = cardDataLoaded.rows;
+        gridLayout.gridColumns = colums = cardDataLoaded.colums;
+
+        SpawnShuffledCards(cardDataLoaded.cardDataArray);
+        ProgressionController.DeleteSavedDta();
+    }
+
     void SpawnShuffledCards(CardData[] shuffledCardData)
     {
         for (int i = 0; i < shuffledCardData.Length; i++)
@@ -153,12 +170,12 @@ public class GamePlayController : MonoBehaviour
             GameObject cardGO = Instantiate(cardPrefab, cardContainer, false);
             Card currentCard = cardGO.GetComponent<Card>();
             CardData cData = shuffledCardData[i];
-            currentCard.CardData = cData;
-            currentCard.Init(cData, CardClicked,null);
+            currentCard.cardData = cData;
+            currentCard.Init(cData, CardClicked, null);
 
             cardGO.transform.localScale = (cData.cardState == CardState.Correct) ? Vector3.zero : Vector3.one;
 
-            cardsInGamePlay.Add(currentCard.CardData);
+            cardsInGamePlay.Add(currentCard.cardData);
         }
     }
     CardData[] GenerateFreshCardData(int length)
@@ -207,7 +224,6 @@ public class GamePlayController : MonoBehaviour
         }
     }
 
-
     public void CardClicked(Card cardData)
 
     {
@@ -225,7 +241,7 @@ public class GamePlayController : MonoBehaviour
         {
             UiController.GamePlayInfoPanel.SetCardAttempts(++GameController.ProgressionController.CardData.attemptsCounter);
 
-            if (firstCard.CardData.CardType == secondCard.CardData.CardType)
+            if (firstCard.cardData.CardType == secondCard.cardData.CardType)
             {
                 // Debug.Log("Correct Match");
                 string[] successText = { "Nice", "Weldone", "Aawasome" };
@@ -258,12 +274,21 @@ public class GamePlayController : MonoBehaviour
 
     void AddCorrectScore()
     {
+        ProgressionController.CardData.correctCardsPlayed++;
+        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(ProgressionController.CardData.correctCardsPlayed);
 
-        UiController.GamePlayInfoPanel.SetCorrectCardsMacth(++ProgressionController.CardData.correctCardsPlayed);
+        AutoSave();
+
         if (ProgressionController.CardData.correctCardsPlayed >= ProgressionController.CardData.maxCardToPlay)
         {
             DisplayComplete();
         }
+
+     
+        //else if(AllCardsArePlayed())
+        //    DisplayComplete();
+
+        // print("AddCorrectScore :"+AllCardsArePlayed());
     }
     void AddInCorrectScore()
     {
@@ -277,15 +302,58 @@ public class GamePlayController : MonoBehaviour
 
     void DisplayComplete()
     {
+        ProgressionController.DeleteSavedDta();
         UiController.CompleteScreen.DisplayCompleteScreen();// loose screen
         SoundManager.Instance.PlayWinSound();
     }
 
+    void AutoSave()
+    {
+        if (isAutoSaveOn)
+        {
+            SaveGame();
+        }
+    }
+    public void SaveGame(Action onComplete=null)
+    {
+        if (firstCard != null)
+            firstCard.ResetCard();
+        if (secondCard != null)
+            secondCard.ResetCard();
+
+        CardDataWrapper wrapper = GameManager.Instance.ProgressionController.CardData;
+        wrapper.cardDataArray = GameController.GamePlayController.cardsInGamePlay.ToArray();
+        if (wrapper.cardDataArray == null || wrapper.cardDataArray.Length < 1)
+        {
+            print("No data to save ");
+            return;
+
+        }
+
+        GameController.ProgressionController.SaveGameData(wrapper, onComplete); 
+    }
     //Timer 
     private void OnTimerEnd()
     {
         //TODO : Fail, Time Over or complete screen
         DisplayComplete();
+        ProgressionController.DeleteSavedDta();
+    }
+
+    // precaution Methods// can be called on addscore method to completed
+    // the game if accidentaly some score card macth, missmatched 
+    bool AllCardsArePlayed()
+    {
+        bool areDone = true;
+        foreach (var item in cardsInGamePlay)
+        {
+            if (item.cardState == CardState.None)
+            {
+                areDone = false;
+                break;
+            }
+        }
+        return areDone;
     }
 }
 

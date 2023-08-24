@@ -17,7 +17,7 @@ public class ProgresssionSaver
     {
        
         string json = JsonUtility.ToJson(cardDataArray);
-        Debug.Log(json);
+      //  Debug.Log(json);
         File.WriteAllText(Application.persistentDataPath + basePath, json);
 
        // Debug.Log(Application.persistentDataPath + basePath);

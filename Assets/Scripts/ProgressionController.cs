@@ -28,13 +28,6 @@ public class ProgressionController : Singleton<ProgressionController>
 
 
     ProgresssionSaver ProgresssionSaver = new ProgresssionSaver();
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-
 
     // Update is called once per frame
     public void SaveGameData(CardDataWrapper cards, Action onComplete = null)

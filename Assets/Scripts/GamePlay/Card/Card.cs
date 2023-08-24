@@ -10,7 +10,7 @@ namespace GameCard
     {
         [Space]
         [Header("Card Data")]
-        public CardData CardData;
+        public CardData cardData;
 
         public bool IsFliped => isFliped;
         [Range(1, 20)]
@@ -38,11 +38,16 @@ namespace GameCard
 
             DisplayTestId();
         }
-
+        public void ResetCard()
+        {
+            isFliped = false;
+            cardData.cardState = CardState.None;
+            ChangeSprite();
+        }
         void DisplayTestId()
         {
             testIdTxt.gameObject.SetActive(testGamePaly);
-            testIdTxt.text = string.Empty + CardData.CardType;// ToString();
+            testIdTxt.text = string.Empty + cardData.CardType;// ToString();
         }
         void AddListners(Action<Card> CardData, Action callBack)
         {
@@ -57,13 +62,13 @@ namespace GameCard
         }
         void FillData(CardData cData)
         {
-            this.CardData = cData;
+            this.cardData = cData;
             //cardFaceImage.sprite = this.CardData.normalFaceSprite;
             ChangeSprite();
         }
         void ChangeSprite()
         {
-            cardFaceImage.sprite = IsFliped ? this.CardData.specificFaceSprite : CardData.normalFaceSprite;
+            cardFaceImage.sprite = IsFliped ? this.cardData.specificFaceSprite : cardData.normalFaceSprite;
         }
         public override void Flip()
         {
@@ -80,7 +85,7 @@ namespace GameCard
         {
             // this.gameObject.SetActive(false);
 
-            CardData.cardState = CardState.Correct;
+            cardData.cardState = CardState.Correct;
             this.transform.localScale = Vector3.zero;
         }
         public override void CardMissMatched()
@@ -94,13 +99,13 @@ namespace GameCard
             ChangeSprite();
             FlipNormalFace();
 
-            CardData.cardState = CardState.InCorrect;
+            cardData.cardState = CardState.InCorrect;
             cardBtn.interactable = true;
         }
 
         public void DoScale()
         {
-            if (CardData.cardState == CardState.Correct)
+            if (cardData.cardState == CardState.Correct)
                 return;
 
             Transform transformToRotate = transform; // You can replace this with the actual transform you want to rotate
@@ -112,13 +117,13 @@ namespace GameCard
 
         public  IEnumerator CheckMissMatchCard()
         {
-            Debug.Log("Before Id : " + CardData.CardType);
+            Debug.Log("Before Id : " + cardData.CardType);
             if (FlipCoroutine != null)
                 yield return FlipCoroutine;
             else
                 yield return null;
 
-            Debug.Log("After Id : "+CardData.CardType);
+            Debug.Log("After Id : "+cardData.CardType);
             FlipNormalFace();
 
             StopCoroutine(CheckMissMatchCard());
@@ -154,7 +159,7 @@ namespace GameCard
 
             // isFliped = !isFliped;
             //  Debug.Log("OnFlip Middle After : " + isFliped + "of card type :" + CardData.CardType);
-            cardFaceImage.sprite = IsFliped ? this.CardData.specificFaceSprite : CardData.normalFaceSprite;
+            cardFaceImage.sprite = IsFliped ? this.cardData.specificFaceSprite : cardData.normalFaceSprite;
         }
         void OnFlipComplete()
         {

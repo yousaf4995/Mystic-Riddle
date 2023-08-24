@@ -19,14 +19,14 @@ public class UiController : Singleton<UiController>
 
 
     // private 
-    GameController GameController
+    GameManager GameController
     {
         get
         {
-            var gc = GameController.Instance;
+            var gc = GameManager.Instance;
 
             if (!gc || gc == null)
-                gc = FindAnyObjectByType<GameController>();
+                gc = FindAnyObjectByType<GameManager>();
 
             return gc;
 

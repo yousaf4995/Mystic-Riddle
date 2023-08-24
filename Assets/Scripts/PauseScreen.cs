@@ -13,14 +13,14 @@ public class PauseScreen : MonoBehaviour
 
     [Space]
     public InfoTexts gamePauseInfoTxts;
-    GameController GameController
+    GameManager GameController
     {
         get
         {
-            var gc = GameController.Instance;
+            var gc = GameManager.Instance;
 
             if (!gc || gc == null)
-                gc = FindAnyObjectByType<GameController>();
+                gc = FindAnyObjectByType<GameManager>();
 
             return gc;
 
@@ -67,22 +67,13 @@ public class PauseScreen : MonoBehaviour
     //save game
     void SaveGame()
     {
-
-        CardDataWrapper wrapper = GameController.Instance.ProgressionController.CardData;
-        wrapper.cardDataArray = GameController.GamePlayController.cardsInGamePlay.ToArray();
-        if (wrapper.cardDataArray == null || wrapper.cardDataArray.Length < 1)
-        {
-            print("No data to save ");
-            return;
-
-        }
-
-        GameController.ProgressionController.SaveGameData(wrapper, () =>
-        {
-            Debug.Log("Data Saved Successfuly");
-            GameController.Toast.ShowToast("Game Saved Successfuly");
-            SoundManager.Instance.PlayCorrectSound();
-        });
+        GameController.GamePlayController.SaveGame(
+            () =>
+            {
+                Debug.Log("Data Saved Successfuly");
+                GameController.Toast.ShowToast("Game Saved Successfuly");
+                SoundManager.Instance.PlayCorrectSound();
+            });
     }
     void PopulateProgressionDta()
     {

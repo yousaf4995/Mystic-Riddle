@@ -15,15 +15,17 @@ public class StartScreen : MonoBehaviour
     public Slider cardSizeSpawner;
     public TMPro.TMP_Text cardSpawnInfoTxt;
     public UIButton plaGameButton;
+    [Space]
+    public Toggle autpoSaveButton;
 
-    GameController GameController
+    GameManager GameController
     {
         get
         {
-            var gc = GameController.Instance;
+            var gc = GameManager.Instance;
 
             if (!gc || gc == null)
-                gc = FindAnyObjectByType<GameController>();
+                gc = FindAnyObjectByType<GameManager>();
 
             return gc;
 
@@ -32,14 +34,13 @@ public class StartScreen : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void DisplayStartScreen(bool enable)
     {
         startPanel.SetActive(enable);
     }
-
 
     public void Initialized()
     {
@@ -57,7 +58,11 @@ public class StartScreen : MonoBehaviour
 
         plaGameButton.onClick.RemoveListener(StartPlayGame);
         plaGameButton.onClick.AddListener(StartPlayGame);
-       
+
+        autpoSaveButton.onValueChanged.RemoveListener(OnAutoSaveGameChanged);
+        autpoSaveButton.onValueChanged.AddListener(OnAutoSaveGameChanged);
+        autpoSaveButton.isOn = PlayerPrefsManager.IsAutoSavedEnable();
+
         DisplayStartScreen(true);
     }
 
@@ -79,6 +84,12 @@ public class StartScreen : MonoBehaviour
 
     private void OnCardSpawnChnage(float slideValue)
     {
+        if ((int)slideValue % 2 != 0) // skipping odd one
+        {
+            // Update the slider's value to the next even number
+            cardSizeSpawner.value = Mathf.Ceil(slideValue) + 1;
+            slideValue = Mathf.Ceil(slideValue) + 1;
+        }
         GameType((int)slideValue, (int)slideValue);
         cardSpawnInfoTxt.text = slideValue + "x" + slideValue;
     }
@@ -93,5 +104,12 @@ public class StartScreen : MonoBehaviour
     {
         DisplayStartScreen(false);
         GameController.GamePlayController.InitializeGame();
+    }
+
+    //  auto save region
+    private void OnAutoSaveGameChanged(bool on)
+    {
+        PlayerPrefsManager.SetAutoSavePregression(on ? 1 : 0);
+
     }
 }

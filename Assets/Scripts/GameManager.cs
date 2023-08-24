@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : Singleton<GameController>
+public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GamePlayController gamePlayController;
     public GamePlayController GamePlayController => gamePlayController;
